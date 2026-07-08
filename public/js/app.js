@@ -326,7 +326,7 @@ async function renderWatchPage(id){
   const infoEl=$('watch-info'), sidebarEl=$('watch-sidebar');
   if(wrap){
     wrap.innerHTML='';
-    if(window.4reelsPlayer) new window.4reelsPlayer('watch-player-wrap',id);
+    if(window['4reelsPlayer']) new window['4reelsPlayer']('watch-player-wrap', id);
     // Party bar below player
     const partyBar = document.createElement('div');
     partyBar.className = 'watch-party-bar';
@@ -451,24 +451,43 @@ function initSearch(){
   });
 }
 
-function renderDrop(data,q,drop,inp){
-  drop.innerHTML='';
-  if(!data.results?.length){ drop.innerHTML=`<div class="sd-empty">No results for "${esc(q)}"</div>`; return; }
-  data.results.slice(0,6).forEach(m=>{
-    const item=document.createElement('div'); item.className='sd-item';
-    item.innerHTML=`<img class="sd-poster" src="${esc(m.poster||'')}" alt="" loading="lazy" onerror="this.src=''">
-      <div><div class="sd-title">${esc(m.title)}</div>
-      <div class="sd-meta">${esc(m.year)} · <span class="sd-rating">★ ${esc(fmtRating(m.rating))}</span></div></div>`;
-    item.addEventListener('click',()=>{ drop.classList.remove('open'); if(inp) inp.value=''; router.go(`/movie/${m.tmdbId||m.id}`); });
+function renderDrop(data, q, drop, inp) {
+  drop.innerHTML = '';
+  if (!data.results?.length) {
+    drop.innerHTML = `<div class="sd-empty">No results for "${esc(q)}"</div>`;
+    return;
+  }
+  data.results.slice(0, 6).forEach(m => {
+    const item = document.createElement('div');
+    item.className = 'sd-item';
+    const yearPart = m.year ? esc(m.year) + ' · ' : '';
+    item.innerHTML = `
+      <img class="sd-poster" src="${esc(m.poster || '')}" alt="" loading="lazy" onerror="this.src=''">
+      <div>
+        <div class="sd-title">${esc(m.title)}</div>
+        <div class="sd-meta">${yearPart}<span class="sd-rating">★ ${esc(fmtRating(m.rating))}</span></div>
+      </div>`;
+    item.addEventListener('click', () => {
+      drop.classList.remove('open');
+      if (inp) inp.value = '';
+      router.go(`/movie/${m.tmdbId || m.id}`);
+    });
     drop.appendChild(item);
   });
-  if(data.totalResults>6){
-    const f=document.createElement('div'); f.className='sd-footer'; f.textContent=`See all ${data.totalResults} results`;
-    f.addEventListener('click',()=>{ drop.classList.remove('open'); if(inp) inp.value=''; router.go(`/search?q=${encodeURIComponent(q)}`); });
+  if (data.totalResults > 6) {
+    const f = document.createElement('div');
+    f.className = 'sd-footer';
+    f.textContent = `See all ${data.totalResults} results`;
+    f.addEventListener('click', () => {
+      drop.classList.remove('open');
+      if (inp) inp.value = '';
+      router.go(`/search?q=${encodeURIComponent(q)}`);
+    });
     drop.appendChild(f);
   }
   drop.classList.add('open');
 }
+
 
 // ── Pagination ─────────────────────────────────────────
 function buildPagination(id,cur,total,onClick){

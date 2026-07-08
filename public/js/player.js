@@ -180,4 +180,4 @@ class Player {
   }
 }
 
-window.4reelsPlayer = Player;
+window['4reelsPlayer'] = Player;
