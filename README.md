@@ -1,4 +1,4 @@
-# Luvenn v3 🎬
+# 4reels v3 🎬
 
 Free, ad-free HD movie streaming with sidebar layout.
 
@@ -61,4 +61,4 @@ Schema auto-created on boot. `users` table fields:
 
 ## Custom logo
 
-Drop `luvenn.png` into `public/` — served at `/logo.png` automatically.
+Drop `4reels.png` into `public/` — served at `/logo.png` automatically.

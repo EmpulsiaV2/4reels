@@ -4,7 +4,7 @@ const jwt      = require('jsonwebtoken');
 const db       = require('../db');
 
 const router   = express.Router();
-const SECRET   = () => process.env.JWT_SECRET || 'luvenn-jwt-secret-change-me';
+const SECRET   = () => process.env.JWT_SECRET || '4reels-jwt-secret-change-me';
 const SALT     = 10;
 
 function sign(user) {

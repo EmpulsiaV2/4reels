@@ -1,4 +1,4 @@
-/* LUVENN — Multi-server player with Party sync */
+/* 4reels — Multi-server player with Party sync */
 'use strict';
 
 (function blockAds() {
@@ -36,7 +36,7 @@ class Player {
 
     // Read preferred server from settings
     try {
-      const prefs = JSON.parse(localStorage.getItem('luvenn_prefs')||'{}');
+      const prefs = JSON.parse(localStorage.getItem('4reels_prefs')||'{}');
       if (prefs.defaultServer != null) this.cur = +prefs.defaultServer;
     } catch {}
 
@@ -180,4 +180,4 @@ class Player {
   }
 }
 
-window.LuvennPlayer = Player;
+window.4reelsPlayer = Player;

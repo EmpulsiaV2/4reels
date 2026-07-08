@@ -1,10 +1,10 @@
-// PM2 Ecosystem Config — luvenn.xyz
+// PM2 Ecosystem Config — 4reels.xyz
 // Usage: pm2 start ecosystem.config.js
 
 module.exports = {
   apps: [
     {
-      name: 'luvenn',
+      name: '4reels',
       script: 'index.js',
       instances: 'max',       // use all CPU cores
       exec_mode: 'cluster',

@@ -61,9 +61,9 @@ app.use((req, res, next) => {
 
 // ── Static files ──────────────────────────────────────
 app.get('/logo.png', (req, res) => {
-  const custom = path.join(__dirname, 'public', 'luvenn.png');
+  const custom = path.join(__dirname, 'public', '4reels.png');
   if (fs.existsSync(custom)) return res.sendFile(custom);
-  res.sendFile(path.join(__dirname, 'public', 'luvenn-logo.svg'));
+  res.sendFile(path.join(__dirname, 'public', '4reels-logo.svg'));
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -133,7 +133,7 @@ attachPartyWS(server);
 
 // ── Start ─────────────────────────────────────────────
 server.listen(PORT, () => {
-  console.log(`\n🎬  Luvenn  →  http://localhost:${PORT}`);
+  console.log(`\n🎬  4reels  →  http://localhost:${PORT}`);
   console.log(`   TMDB:    ${process.env.TMDB_API_KEY ? '✓' : '✗  run /setup'}`);
   console.log(`   DB:      ${process.env.DATABASE_URL ? '✓ Neon Postgres' : '✗  set DATABASE_URL'}`);
   console.log(`   Discord: ${process.env.DISCORD_URL || '(not set)'}\n`);

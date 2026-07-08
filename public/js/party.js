@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════
-   LUVENN PARTY — Client-side WebSocket sync engine
+   4reels PARTY — Client-side WebSocket sync engine
    ══════════════════════════════════════════════════════ */
 'use strict';
 
@@ -191,7 +191,7 @@ const Party = (() => {
   }
 
   function getActivePlayer() {
-    // LuvennPlayer exposes a global sync handle when on a watch page
+    // 4reelsPlayer exposes a global sync handle when on a watch page
     return window._partyPlayerHandle || null;
   }
 
@@ -690,7 +690,7 @@ const Party = (() => {
     // Get current user from Auth
     _getUser() {
       try {
-        const u = JSON.parse(localStorage.getItem('luvenn_user') || 'null');
+        const u = JSON.parse(localStorage.getItem('4reels_user') || 'null');
         return u;
       } catch { return null; }
     },

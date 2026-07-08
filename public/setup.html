@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Luvenn — Setup</title>
+  <title>4reels — Setup</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -36,10 +36,10 @@
   </style>
 </head>
 <body>
-  <div class="logo">luvenn<span>.xyz</span></div>
+  <div class="logo">4reels<span>.xyz</span></div>
   <div class="card">
     <h1>⚡ Quick Setup</h1>
-    <p class="sub">Luvenn needs a free TMDB API key to load movie data. Takes about 60 seconds — no credit card needed.</p>
+    <p class="sub">4reels needs a free TMDB API key to load movie data. Takes about 60 seconds — no credit card needed.</p>
     <a class="get-key" href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       Get your free key at themoviedb.org
@@ -50,7 +50,7 @@
       <div class="step"><div class="snum">3</div><div class="stxt">Copy your <strong>API Key (v3 auth)</strong> and paste below</div></div>
     </div>
     <input type="text" id="key-input" placeholder="Paste your TMDB API key here…" autocomplete="off" spellcheck="false"/>
-    <button class="save-btn" id="save-btn">Save & Launch Luvenn →</button>
+    <button class="save-btn" id="save-btn">Save & Launch 4reels →</button>
     <div class="msg" id="msg"></div>
     <hr/>
     <p class="skip">Already added the key to <code>.env</code>? <a onclick="location.href='/'">Launch →</a></p>
@@ -67,8 +67,8 @@
         const r = await fetch('/api/setup/key', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({key}) });
         const d = await r.json();
         if (r.ok && d.ok) { msg.className='msg ok'; msg.textContent='✓ Key saved! Launching…'; setTimeout(()=>location.href='/', 1000); }
-        else { msg.className='msg err'; msg.textContent=d.error||'Invalid key.'; btn.disabled=false; btn.textContent='Save & Launch Luvenn →'; }
-      } catch(e) { msg.className='msg err'; msg.textContent='Could not connect to server.'; btn.disabled=false; btn.textContent='Save & Launch Luvenn →'; }
+        else { msg.className='msg err'; msg.textContent=d.error||'Invalid key.'; btn.disabled=false; btn.textContent='Save & Launch 4reels →'; }
+      } catch(e) { msg.className='msg err'; msg.textContent='Could not connect to server.'; btn.disabled=false; btn.textContent='Save & Launch 4reels →'; }
     }
     document.getElementById('save-btn').addEventListener('click', save);
     document.getElementById('key-input').addEventListener('keydown', e => { if(e.key==='Enter') save(); });

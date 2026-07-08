@@ -1,4 +1,4 @@
-/* LUVENN v3 — SPA Frontend */
+/* 4reels v3 — SPA Frontend */
 'use strict';
 
 const $  = id  => document.getElementById(id);
@@ -169,12 +169,12 @@ function showView(id){
 
 // ── Safe banner ────────────────────────────────────────
 function initSafeBanner(){
-  if(localStorage.getItem('luvenn-safe-dismissed')){
+  if(localStorage.getItem('4reels-safe-dismissed')){
     const b=$('safe-banner'); if(b) b.style.display='none'; return;
   }
   $('safe-close')?.addEventListener('click',()=>{
     const b=$('safe-banner'); if(b) b.style.display='none';
-    localStorage.setItem('luvenn-safe-dismissed','1');
+    localStorage.setItem('4reels-safe-dismissed','1');
   });
 }
 
@@ -259,13 +259,13 @@ async function renderGenres(){
 // ── Movie detail ────────────────────────────────────────
 async function renderMovieDetail(id){
   showView('view-movie');
-  document.title='Loading… — Luvenn';
+  document.title='Loading… — 4reels';
   $('movie-loader').style.display='flex';
   $('movie-detail-content').style.display='none';
   $('movie-detail-content').innerHTML='';
   try{
     const m=await API.details(id);
-    document.title=`${m.title} — Luvenn`;
+    document.title=`${m.title} — 4reels`;
     $('movie-loader').style.display='none';
     $('movie-detail-content').style.display='block';
     $('movie-detail-content').innerHTML=buildDetailHTML(m);
@@ -321,12 +321,12 @@ function buildDetailHTML(m){
 // ── Watch page ─────────────────────────────────────────
 async function renderWatchPage(id){
   showView('view-watch');
-  document.title='Loading… — Luvenn';
+  document.title='Loading… — 4reels';
   const wrap=$('watch-player-wrap');
   const infoEl=$('watch-info'), sidebarEl=$('watch-sidebar');
   if(wrap){
     wrap.innerHTML='';
-    if(window.LuvennPlayer) new window.LuvennPlayer('watch-player-wrap',id);
+    if(window.4reelsPlayer) new window.4reelsPlayer('watch-player-wrap',id);
     // Party bar below player
     const partyBar = document.createElement('div');
     partyBar.className = 'watch-party-bar';
@@ -349,7 +349,7 @@ async function renderWatchPage(id){
   infoEl.innerHTML=''; sidebarEl.innerHTML='';
   try{
     const m=await API.details(id);
-    document.title=`Watch ${m.title} — Luvenn`;
+    document.title=`Watch ${m.title} — 4reels`;
     infoEl.innerHTML=`
       <h1 class="watch-title">${esc(m.title)}</h1>
       <div class="watch-meta">
@@ -387,7 +387,7 @@ async function renderWatchPage(id){
 // ── My List page ────────────────────────────────────────
 function renderMyList(){
   showView('view-my-list'); setActive('my-list');
-  document.title='My List — Luvenn';
+  document.title='My List — 4reels';
   const items=listGet(), grid=$('mylist-grid'), sub=$('mylist-sub'), clearBtn=$('mylist-clear');
   grid.innerHTML='';
   if(!items.length){
@@ -496,7 +496,7 @@ function setActive(route){
 }
 
 // ── Continue Watching + My List ────────────────────────
-const CW_KEY='luvenn_cw', LIST_KEY='luvenn_list';
+const CW_KEY='4reels_cw', LIST_KEY='4reels_list';
 function cwGet(){ try{ return JSON.parse(localStorage.getItem(CW_KEY)||'[]'); }catch{ return []; } }
 function cwSave(a){ localStorage.setItem(CW_KEY,JSON.stringify(a.slice(0,20))); }
 function cwAdd(movie){ if(!movie?.id&&!movie?.tmdbId) return; let l=cwGet().filter(m=>String(m.id)!==String(movie.tmdbId||movie.id)); l.unshift({id:String(movie.tmdbId||movie.id),title:movie.title||'',year:movie.year||'',rating:movie.rating||'N/A',poster:movie.poster||null,backdrop:movie.backdrop||null,addedAt:Date.now()}); cwSave(l); }
@@ -676,8 +676,8 @@ function initNav(){
 const Auth={
   _user:null, _token:null,
   init(){
-    this._token=localStorage.getItem('luvenn_token');
-    try{ this._user=JSON.parse(localStorage.getItem('luvenn_user')||'null'); }catch{}
+    this._token=localStorage.getItem('4reels_token');
+    try{ this._user=JSON.parse(localStorage.getItem('4reels_user')||'null'); }catch{}
     this._applyPrefs();
     this._updateSidebar();
   },
@@ -685,9 +685,9 @@ const Auth={
   get token(){ return this._token; },
   get isLoggedIn(){ return !!this._token&&!!this._user; },
   get isAdmin(){ return this._user?.role==='admin'; },
-  save(token,user){ this._token=token; this._user=user; localStorage.setItem('luvenn_token',token); localStorage.setItem('luvenn_user',JSON.stringify(user)); this._updateSidebar(); this._applyPrefs(); },
-  logout(){ this._token=null; this._user=null; localStorage.removeItem('luvenn_token'); localStorage.removeItem('luvenn_user'); this._updateSidebar(); toast('Logged out.'); router.go('/'); },
-  async refresh(){ if(!this._token) return; try{ const r=await authFetch('GET','/api/auth/me'); this._user=r; localStorage.setItem('luvenn_user',JSON.stringify(r)); this._updateSidebar(); }catch{ this.logout(); } },
+  save(token,user){ this._token=token; this._user=user; localStorage.setItem('4reels_token',token); localStorage.setItem('4reels_user',JSON.stringify(user)); this._updateSidebar(); this._applyPrefs(); },
+  logout(){ this._token=null; this._user=null; localStorage.removeItem('4reels_token'); localStorage.removeItem('4reels_user'); this._updateSidebar(); toast('Logged out.'); router.go('/'); },
+  async refresh(){ if(!this._token) return; try{ const r=await authFetch('GET','/api/auth/me'); this._user=r; localStorage.setItem('4reels_user',JSON.stringify(r)); this._updateSidebar(); }catch{ this.logout(); } },
   _updateSidebar(){
     const avatarEl=$('sb-profile-avatar'), nameEl=$('sb-profile-name'), initialsEl=$('nav-avatar-initials');
     if(this._user){
@@ -721,7 +721,7 @@ async function authFetch(method,path,body){
   return data;
 }
 
-const PREFS_KEY='luvenn_prefs';
+const PREFS_KEY='4reels_prefs';
 function getPrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS_KEY)||'{}'); }catch{ return {}; } }
 function savePrefs(patch){ const p={...getPrefs(),...patch}; localStorage.setItem(PREFS_KEY,JSON.stringify(p)); return p; }
 
@@ -750,7 +750,7 @@ function buildAuthModal(){
       <button class="auth-close" id="auth-close">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
-      <div class="auth-modal-logo"><img src="/luvenn-icon.svg" alt="Luvenn"/></div>
+      <div class="auth-modal-logo"><img src="/4reels-icon.svg" alt="4reels"/></div>
       <div class="auth-tabs">
         <button class="auth-tab active" data-auth-tab="login">Sign In</button>
         <button class="auth-tab" data-auth-tab="register">Create Account</button>
@@ -795,7 +795,7 @@ function buildAuthModal(){
     errEl.classList.remove('show'); btn.disabled=true; btn.textContent='Creating account…';
     try{
       const d=await authFetch('POST','/api/auth/register',{username:$('auth-reg-user').value.trim(),email:$('auth-reg-email').value.trim(),password:$('auth-reg-pass').value});
-      Auth.save(d.token,d.user); closeAuthModal(); toast(`Welcome to Luvenn, ${d.user.displayName||d.user.username}! 🎬`,'success');
+      Auth.save(d.token,d.user); closeAuthModal(); toast(`Welcome to 4reels, ${d.user.displayName||d.user.username}! 🎬`,'success');
     } catch(e){ errEl.textContent=e.message; errEl.classList.add('show'); }
     finally{ btn.disabled=false; btn.textContent='Create Account'; }
   });
@@ -815,7 +815,7 @@ window.openAuthModal=openAuthModal;
 // ── Profile page ────────────────────────────────────────
 function renderProfile(){
   showView('view-profile'); setActive('profile');
-  document.title='Profile — Luvenn';
+  document.title='Profile — 4reels';
   if(!Auth.isLoggedIn){
     const layout=document.querySelector('.profile-layout');
     if(layout) layout.innerHTML=`<div style="text-align:center;padding:64px 20px">
@@ -900,7 +900,7 @@ function renderProfile(){
   $('clear-list-btn')?.addEventListener('click',()=>{ listSave([]); toast('My List cleared.'); if($('stat-list')) $('stat-list').textContent='0'; });
   $('reset-all-btn')?.addEventListener('click',()=>{
     if(!confirm('Reset ALL data? This cannot be undone.')) return;
-    cwSave([]); listSave([]); localStorage.removeItem(PREFS_KEY); localStorage.removeItem('luvenn-safe-dismissed');
+    cwSave([]); listSave([]); localStorage.removeItem(PREFS_KEY); localStorage.removeItem('4reels-safe-dismissed');
     Auth.logout(); toast('All data reset.','success');
   });
   document.querySelectorAll('.profile-tab').forEach(tab=>{
@@ -991,7 +991,7 @@ async function loadAdminUsers(){
 
 function initDiscord(){
   const link=$('nav-discord'); if(!link) return;
-  const url=localStorage.getItem('luvenn_discord')||'#';
+  const url=localStorage.getItem('4reels_discord')||'#';
   if(url&&url!=='#') link.href=url;
   // Fetch discord URL from env via a quick health check — server can expose it
   fetch('/api/health').then(r=>r.json()).then(d=>{ if(d.discordUrl){ link.href=d.discordUrl; } }).catch(()=>{});

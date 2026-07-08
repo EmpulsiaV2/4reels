@@ -1,7 +1,7 @@
 {
-  "name": "luvenn",
+  "name": "4reels",
   "version": "3.1.0",
-  "description": "Free HD movie streaming \u2014 Luvenn.xyz",
+  "description": "Free HD movie streaming \u2014 4reels.xyz",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

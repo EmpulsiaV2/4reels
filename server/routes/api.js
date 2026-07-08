@@ -39,7 +39,7 @@ router.post('/dmca', wrap(async (req,res) => {
     return res.status(400).json({ error:'All fields required.' });
   if (!WEBHOOK) return res.status(503).json({ error:'DMCA not configured.' });
   await axios.post(WEBHOOK, {
-    username:'Luvenn DMCA Bot',
+    username:'4reels DMCA Bot',
     embeds:[{ title:'🚨 DMCA Notice', color:0xff4757, timestamp:new Date().toISOString(),
       fields:[
         { name:'👤 Name',    value:String(name).slice(0,200),        inline:true },
@@ -48,7 +48,7 @@ router.post('/dmca', wrap(async (req,res) => {
         { name:'📝 Desc',    value:String(description).slice(0,1000),inline:false },
         { name:'✍️ Sig',    value:String(signature).slice(0,200),   inline:true },
       ],
-      footer:{ text:'luvenn.xyz' }
+      footer:{ text:'4reels.xyz' }
     }]
   });
   res.json({ ok:true });
@@ -59,7 +59,7 @@ router.post('/contact', wrap(async (req,res) => {
   if (!name||!email||!message) return res.status(400).json({ error:'Required fields missing.' });
   if (!WEBHOOK) return res.status(503).json({ error:'Contact not configured.' });
   await axios.post(WEBHOOK, {
-    username:'Luvenn Contact',
+    username:'4reels Contact',
     embeds:[{ title:'📬 Contact Form', color:0x2d6fff, timestamp:new Date().toISOString(),
       fields:[
         { name:'Name',    value:String(name).slice(0,200),          inline:true },
@@ -67,7 +67,7 @@ router.post('/contact', wrap(async (req,res) => {
         { name:'Subject', value:String(subject||'—').slice(0,200),  inline:false },
         { name:'Message', value:String(message).slice(0,1000),      inline:false },
       ],
-      footer:{ text:'luvenn.xyz' }
+      footer:{ text:'4reels.xyz' }
     }]
   });
   res.json({ ok:true });
