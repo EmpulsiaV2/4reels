@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>DMCA Takedown — Luvenn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/main.css"/>
+  <link rel="icon" type="image/svg+xml" href="/luvenn-icon.svg"/>
+  <link rel="apple-touch-icon" href="/luvenn-icon.svg"/><text y='.9em' font-size='90'>🎬</text></svg>"/>
+</head>
+<body>
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="nav-logo-wrap" href="/"><img src="/luvenn-logo.svg" alt="Luvenn" class="nav-logo-img" height="36"/></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/movies">Movies</a></li>
+      <li><a href="/trending">Trending</a></li>
+      <li><a href="/top-rated">Top Rated</a></li>
+      <li><a href="/genres">Genres</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mob-nav" id="mob-nav">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/movies">Movies</a></li>
+    <li><a href="/trending">Trending</a></li>
+    <li><a href="/top-rated">Top Rated</a></li>
+    <li><a href="/genres">Genres</a></li>
+  </ul>
+</div>
+
+<div style="padding-top:var(--nav)">
+  <div class="legal-hero">
+    <h1>DMCA Takedown Request</h1>
+    <p>If you believe content on Luvenn infringes your copyright, please complete the form below. We take all valid DMCA notices seriously and will respond promptly.</p>
+  </div>
+
+  <div class="legal-wrap">
+    <div class="legal-section">
+      <h2>What is DMCA?</h2>
+      <p>The Digital Millennium Copyright Act (DMCA) provides a process for copyright holders to request removal of infringing content. Luvenn does not host any media files — we embed streams from third-party sources. However, we will forward valid DMCA notices to the appropriate hosting providers and remove embeds upon receipt of a valid notice.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Before You Submit</h2>
+      <ul>
+        <li>Ensure you are the copyright holder or authorised to act on their behalf.</li>
+        <li>Provide the specific URL(s) where the infringing content appears.</li>
+        <li>False DMCA notices may result in legal liability under 17 U.S.C. § 512(f).</li>
+        <li>We will respond to all valid notices within 72 hours.</li>
+      </ul>
+    </div>
+
+    <div class="dmca-form">
+      <h2>Submit a DMCA Notice</h2>
+      <p class="form-sub">All fields marked with * are required. Your submission will be reviewed by our team and forwarded to the relevant hosting provider.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="dmca-name" placeholder="Your legal name" autocomplete="name"/>
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" id="dmca-email" placeholder="your@email.com" autocomplete="email"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Company / Organisation</label>
+          <input type="text" id="dmca-company" placeholder="Optional"/>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" id="dmca-country" placeholder="Your country"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>URL of Original Copyrighted Work *</label>
+        <input type="url" id="dmca-original-url" placeholder="https://example.com/original-work"/>
+      </div>
+
+      <div class="form-group">
+        <label>URL(s) of Infringing Content on Luvenn *</label>
+        <textarea id="dmca-infringing-url" placeholder="https://luvenn.xyz/movie/... (one per line)"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Description of Copyrighted Work *</label>
+        <textarea id="dmca-description" placeholder="Describe the copyrighted content and how it is being infringed…"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Type of Content</label>
+        <select id="dmca-type" style="padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:var(--r6);color:var(--t1);font-family:var(--fb);font-size:.88rem;outline:none">
+          <option value="movie">Movie / Film</option>
+          <option value="tv">TV Show / Series</option>
+          <option value="music">Music / Soundtrack</option>
+          <option value="image">Image / Artwork</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-checkbox">
+        <input type="checkbox" id="dmca-good-faith"/>
+        <label for="dmca-good-faith">I have a good faith belief that use of the copyrighted material described above is not authorised by the copyright owner, its agent, or the law.</label>
+      </div>
+
+      <div class="form-checkbox">
+        <input type="checkbox" id="dmca-accuracy"/>
+        <label for="dmca-accuracy">I swear, under penalty of perjury, that the information in this notification is accurate and that I am the copyright owner or authorised to act on behalf of the copyright owner.</label>
+      </div>
+
+      <div class="form-group">
+        <label>Electronic Signature *</label>
+        <input type="text" id="dmca-signature" placeholder="Type your full legal name as your electronic signature"/>
+      </div>
+
+      <button class="btn-pri" id="dmca-submit" style="width:100%;justify-content:center;border:none">
+        Submit DMCA Notice
+      </button>
+      <div class="form-msg" id="dmca-msg"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <a class="nav-logo-wrap" href="/" style="display:inline-block;margin-bottom:10px"><img src="/luvenn-logo.svg" alt="Luvenn" class="nav-logo-img" height="36"/></a>
+        <p style="font-size:.8rem;color:var(--t3);line-height:1.6;max-width:280px">Free, ad-free movie streaming. No account needed.</p>
+        <p style="font-size:.75rem;color:var(--t3);margin-top:10px">Streams by <strong style="color:var(--b4)">VidEasy</strong> · Data by <strong style="color:var(--b4)">TMDB</strong></p>
+      </div>
+      <div>
+        <h4 class="footer-h">Browse</h4>
+        <ul class="footer-ul">
+          <li><a href="/movies">All Movies</a></li>
+          <li><a href="/trending">Trending</a></li>
+          <li><a href="/top-rated">Top Rated</a></li>
+          <li><a href="/genres">Genres</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-h">Legal</h4>
+        <ul class="footer-ul">
+          <li><a href="/dmca">DMCA</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <p>© 2026 luvenn.xyz</p>
+      <p style="font-size:.68rem;max-width:500px;line-height:1.5">We do not host any media files. All content is embedded from third-party sources.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('dmca-submit').addEventListener('click', async () => {
+  const btn  = document.getElementById('dmca-submit');
+  const msg  = document.getElementById('dmca-msg');
+  const name = document.getElementById('dmca-name').value.trim();
+  const email= document.getElementById('dmca-email').value.trim();
+  const desc = document.getElementById('dmca-description').value.trim();
+  const sig  = document.getElementById('dmca-signature').value.trim();
+  const url  = document.getElementById('dmca-infringing-url').value.trim();
+  const gf   = document.getElementById('dmca-good-faith').checked;
+  const acc  = document.getElementById('dmca-accuracy').checked;
+
+  msg.className = 'form-msg';
+  if (!name||!email||!desc||!sig) { msg.className='form-msg err'; msg.textContent='Please fill in all required fields.'; return; }
+  if (!gf||!acc) { msg.className='form-msg err'; msg.textContent='You must check both declaration boxes.'; return; }
+
+  btn.disabled=true; btn.textContent='Submitting…';
+  try {
+    const r = await fetch('/api/dmca', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name, email, url,
+        description: desc + '\n\nCompany: ' + (document.getElementById('dmca-company').value||'N/A') + '\nCountry: ' + (document.getElementById('dmca-country').value||'N/A') + '\nContent type: ' + document.getElementById('dmca-type').value + '\nOriginal URL: ' + (document.getElementById('dmca-original-url').value||'N/A'),
+        signature: sig
+      }),
+    });
+    const d = await r.json();
+    if (r.ok) {
+      msg.className='form-msg ok';
+      msg.textContent='✓ Your DMCA notice has been submitted. We will respond within 72 hours.';
+      btn.textContent='Submitted ✓';
+    } else {
+      msg.className='form-msg err'; msg.textContent=d.error||'Submission failed.';
+      btn.disabled=false; btn.textContent='Submit DMCA Notice';
+    }
+  } catch(e) {
+    msg.className='form-msg err'; msg.textContent='Network error. Please try again.';
+    btn.disabled=false; btn.textContent='Submit DMCA Notice';
+  }
+});
+</script>
+<script>
+// Hamburger mobile nav
+(function(){
+  var hb = document.getElementById('hamburger');
+  var mn = document.getElementById('mob-nav');
+  if(hb && mn){
+    hb.addEventListener('click', function(){
+      var o = hb.classList.toggle('open');
+      mn.classList.toggle('open', o);
+      document.body.classList.toggle('noscroll', o);
+    });
+  }
+  // Scroll shrink
+  window.addEventListener('scroll', function(){
+    var nav = document.getElementById('nav');
+    if(nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>

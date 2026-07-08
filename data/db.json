@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "logan",
+      "email": "logantj123@icloud.com",
+      "passwordHash": "$2a$10$0KXC/fO0tm2b7Y1NiGmxye4ycuXs9Yf46Cy4dsYCSgvm6Opv8Lqvq",
+      "role": "admin",
+      "displayName": "Admin",
+      "avatarColor": "linear-gradient(135deg,#d97706,#0891b2)",
+      "badge": "👑 Admin",
+      "createdAt": "2026-06-29T21:50:22.370Z",
+      "banned": false
+    }
+  ],
+  "nextId": 2
+}
