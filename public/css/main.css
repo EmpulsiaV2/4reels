@@ -6,16 +6,16 @@
 html{height:100%}
 
 :root{
-  --sb:224px;          /* sidebar width */
+  --sb:224px;
   --s0:#0b0c10;
   --s1:#111318;
   --s2:#17191f;
   --s3:#1e2028;
   --s4:#252830;
   --s5:#2e3140;
-  --ac:#ff5d4e;
-  --ac-dim:#e0503e;
-  --ac-soft:rgba(255,93,78,.1);
+  --ac:#3b82f6;        /* Changed from #ff5d4e to blue */
+  --ac-dim:#2563eb;    /* Changed from #e0503e to darker blue */
+  --ac-soft:rgba(59,130,246,.1); /* Changed from rgba(255,93,78,.1) */
   --ok:#3ddc84;
   --warn:#f5a623;
   --tx1:#f0f0f5;
@@ -30,7 +30,6 @@ html{height:100%}
   --fb:'DM Sans',system-ui,sans-serif;
   --max:1360px;
 }
-
 body{
   font-family:var(--fb);background:var(--s0);color:var(--tx1);
   height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;
@@ -336,15 +335,78 @@ img{display:block;max-width:100%}
 .sim-row .mc{flex-shrink:0;width:120px}
 
 /* ── WATCH PAGE ───────────────────────────────────────── */
-.watch-layout{display:grid;grid-template-columns:1fr 260px;gap:16px;padding:16px 20px 40px}
-.watch-player-wrap{margin-bottom:14px;min-width:0;overflow:hidden}
-.watch-title{font-family:var(--fh);font-size:1.1rem;font-weight:700;margin-bottom:5px}
-.watch-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.75rem;color:var(--tx2);margin-bottom:8px}
-.watch-genres{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
-.wpill{padding:2px 8px;border-radius:var(--r2);background:var(--s2);border:1px solid var(--bdr);font-size:.66rem;color:var(--tx2)}
-.watch-overview{font-size:.82rem;color:var(--tx2);line-height:1.65;margin-bottom:11px}
-.watch-crew{font-size:.74rem;color:var(--tx2);margin-bottom:10px}
-.watch-crew strong{color:var(--tx1)}
+.watch-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 16px;
+  padding: 16px 20px 40px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.watch-main {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.watch-player-wrap {
+  margin-bottom: 14px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.watch-title {
+  font-family: var(--fh);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.watch-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: .75rem;
+  color: var(--tx2);
+  margin-bottom: 8px;
+}
+
+.watch-genres {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.wpill {
+  padding: 2px 8px;
+  border-radius: var(--r2);
+  background: var(--s2);
+  border: 1px solid var(--bdr);
+  font-size: .66rem;
+  color: var(--tx2);
+}
+
+.watch-overview {
+  font-size: .82rem;
+  color: var(--tx2);
+  line-height: 1.65;
+  margin-bottom: 11px;
+}
+
+.watch-crew {
+  font-size: .74rem;
+  color: var(--tx2);
+  margin-bottom: 10px;
+}
+
+.watch-crew strong {
+  color: var(--tx1);
+}
+
 .watch-cast-ttl{font-family:var(--fh);font-size:.82rem;font-weight:700;margin-bottom:8px}
 .sidebar-ttl{font-family:var(--fh);font-size:.78rem;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bdr)}
 .sidebar-card{display:flex;gap:8px;padding:6px 4px;cursor:pointer;border-radius:var(--r3);transition:background var(--t)}
@@ -356,56 +418,151 @@ img{display:block;max-width:100%}
 .sb-rat{color:var(--warn);font-weight:700}
 
 /* ── PLAYER — THE ACTUAL FIX ──────────────────────────── */
-/* The player-wrap sits inside the 1fr grid column.
-   We constrain via max-height on the stage.
-   No aspect-ratio on the wrap itself — only on the stage.
-   This prevents grid blowout AND the "suddenly enlarges" flash. */
-.player-shell{
-  display:flex;flex-direction:column;
-  width:100%;background:#000;
-  border-radius:var(--r4);overflow:hidden;
-  border:1px solid var(--bdr);
+.player-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  background: #000;
+  border-radius: var(--r4);
+  overflow: hidden;
+  border: 1px solid var(--bdr);
 }
-.server-bar{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 11px;
-  background:var(--s2);border-bottom:1px solid var(--bdr);
-  flex-wrap:wrap;flex-shrink:0;
-}
-.srv-label{display:flex;align-items:center;gap:4px;font-family:var(--fh);font-size:.62rem;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0}
-.srv-btns{display:flex;gap:4px;flex:1;flex-wrap:wrap}
-.srv-btn{
-  padding:3px 8px;border-radius:var(--r2);
-  background:var(--s3);border:1px solid var(--bdr);
-  color:var(--tx2);font-family:var(--fh);font-size:.66rem;font-weight:600;
-  cursor:pointer;transition:all var(--t);
-}
-.srv-btn:hover{border-color:var(--bdr2);color:var(--tx1)}
-.srv-btn.active{background:var(--ac);border-color:var(--ac);color:#fff}
-.srv-badge{padding:1px 3px;border-radius:2px;background:rgba(0,0,0,.25);font-size:.53rem;font-weight:700;margin-left:2px}
-.adblock-pill{display:flex;align-items:center;gap:4px;padding:2px 7px;border-radius:var(--r2);background:var(--s3);font-size:.62rem;font-weight:600;color:var(--ok);margin-left:auto;flex-shrink:0}
-.adblock-dot{width:4px;height:4px;background:var(--ok);border-radius:50%}
 
-/* THE KEY PLAYER FIX: fixed height, no aspect-ratio on outer shell */
-.player-stage{
-  position:relative;
-  width:100%;
-  /* Hard height — exactly 52vh or 480px whichever is smaller */
-  height:min(52vh,480px);
-  background:#000;
-  flex-shrink:0;
-  overflow:hidden;
+.server-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  background: var(--s2);
+  border-bottom: 1px solid var(--bdr);
+  flex-wrap: wrap;
+  flex-shrink: 0;
 }
-/* iframe fills the stage completely */
-.player-stage iframe{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  border:none;background:#000;
+
+.srv-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--fh);
+  font-size: .62rem;
+  color: var(--tx3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  flex-shrink: 0;
 }
-.player-overlay{position:absolute;inset:0;z-index:3;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
-.pspinner{width:30px;height:30px;border:2px solid var(--s4);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite}
-.povl-txt{font-size:.75rem;color:var(--tx2)}
-.povl-txt strong{color:var(--tx1)}
+
+.srv-btns {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.srv-btn {
+  padding: 3px 8px;
+  border-radius: var(--r2);
+  background: var(--s3);
+  border: 1px solid var(--bdr);
+  color: var(--tx2);
+  font-family: var(--fh);
+  font-size: .66rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t);
+}
+
+.srv-btn:hover {
+  border-color: var(--bdr2);
+  color: var(--tx1);
+}
+
+.srv-btn.active {
+  background: var(--ac);
+  border-color: var(--ac);
+  color: #fff;
+}
+
+.srv-badge {
+  padding: 1px 3px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, .25);
+  font-size: .53rem;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.adblock-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: var(--r2);
+  background: var(--s3);
+  font-size: .62rem;
+  font-weight: 600;
+  color: var(--ok);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.adblock-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--ok);
+  border-radius: 50%;
+}
+
+.player-stage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: min(52vh, 480px);
+  background: #000;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.player-stage iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #000;
+}
+
+.player-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pspinner {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--s4);
+  border-top-color: var(--ac);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+.povl-txt {
+  font-size: .75rem;
+  color: var(--tx2);
+}
+
+.povl-txt strong {
+  color: var(--tx1);
+}
 
 /* ── CONTINUE WATCHING ────────────────────────────────── */
 .cw-card{flex-shrink:0;width:170px;background:var(--s2);border-radius:var(--r4);cursor:pointer;display:flex;flex-direction:column;transition:transform .13s var(--ease)}
@@ -498,8 +655,26 @@ img{display:block;max-width:100%}
 .auth-field input:focus{border-color:var(--ac)}
 .auth-error{padding:7px 10px;border-radius:var(--r2);background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);font-size:.76rem;color:#ef4444;margin-bottom:9px;display:none}
 .auth-error.show{display:block}
-.auth-submit{width:100%;padding:9px;background:var(--ac);color:#fff;font-family:var(--fh);font-weight:700;font-size:.84rem;border:none;border-radius:var(--r3);cursor:pointer;margin-top:2px}
-.auth-submit:hover{background:var(--ac-dim)}
+.auth-submit {
+  width: 100%;
+  padding: 9px;
+  background: var(--ac);
+  color: #fff;
+  font-family: var(--fh);
+  font-weight: 700;
+  font-size: .84rem;
+  border: none;
+  border-radius: var(--r3);
+  cursor: pointer;
+  margin-top: 2px;
+}
+.auth-submit:hover {
+  background: var(--ac-dim);
+}
+.auth-tab.active {
+  background: var(--s3);
+  color: var(--tx1);
+}
 .auth-close{position:absolute;top:11px;right:11px;width:26px;height:26px;border-radius:50%;background:none;border:none;color:var(--tx2);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .auth-close:hover{color:var(--tx1)}
 
@@ -617,7 +792,7 @@ footer{background:var(--s1);border-top:1px solid var(--bdr);margin-left:var(--sb
   .pg-header{padding:18px 14px 11px}
   .genres-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:0 14px 32px}
   .watch-layout{padding:12px 14px 32px}
-  .player-stage{height:min(44vw,320px)}
+  .player-stage{aspect-ratio:16/9;max-height:44vw}
   .md-body{padding:0 14px 36px}
   .profile-layout{padding:18px 14px 48px}
   .footer-inner{padding:22px 14px 14px}

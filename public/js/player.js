@@ -81,12 +81,12 @@ class Player {
 
     this._load(this.cur);
 
-    // Estimate position via elapsed time (since iframes are sandboxed)
     this._posTracker = setInterval(() => {
       if (this._playing) this._pos += 1;
     }, 1000);
   }
 
+  
   _load(idx) {
     this.cur = idx;
     const srv   = SERVERS[idx];
