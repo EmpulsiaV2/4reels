@@ -1,4 +1,4 @@
-// PM2 Ecosystem Config — 4reels.xyz
+// PM2 Ecosystem Config — 4reelscc
 // Usage: pm2 start ecosystem.config.js
 
 module.exports = {
@@ -13,10 +13,12 @@ module.exports = {
       env: {
         NODE_ENV: 'development',
         PORT: 3000,
+        MAINTENANCE_MODE: 'true',
       },
       env_production: {
         NODE_ENV: 'production',
         PORT: 3000,
+        MAINTENANCE_MODE: 'true',
       },
       error_file: './logs/err.log',
       out_file:   './logs/out.log',

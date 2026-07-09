@@ -14,6 +14,8 @@ const { attachPartyWS } = require('./server/party');
 const app    = express();
 const server = http.createServer(app); // use http.Server so WS can share it
 const PORT   = process.env.PORT || 3000;
+const MAINTENANCE = process.env.MAINTENANCE_MODE === 'true';
+const DEV_PAGE = path.join(__dirname, 'public', 'development.html');
 
 // Seed admin + DB schema on startup
 db.seedAdmin().catch(err => {
@@ -47,6 +49,12 @@ app.use(cors());
 app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '4mb' }));
+
+if (MAINTENANCE) {
+  app.use((req, res) => {
+    res.status(503).set('Retry-After', '86400').sendFile(DEV_PAGE);
+  });
+}
 
 // ── Ad-block middleware ──────────────────────────────
 const AD_HOSTS = ['doubleclick.net','googlesyndication.com','adservice.google.com','pagead2.googlesyndication.com','adnxs.com','popads.net','popcash.net','propellerads.com','exoclick.com'];

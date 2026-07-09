@@ -48,7 +48,7 @@ router.post('/dmca', wrap(async (req,res) => {
         { name:'📝 Desc',    value:String(description).slice(0,1000),inline:false },
         { name:'✍️ Sig',    value:String(signature).slice(0,200),   inline:true },
       ],
-      footer:{ text:'4reels.xyz' }
+      footer:{ text:'4reelscc' }
     }]
   });
   res.json({ ok:true });
@@ -67,7 +67,7 @@ router.post('/contact', wrap(async (req,res) => {
         { name:'Subject', value:String(subject||'—').slice(0,200),  inline:false },
         { name:'Message', value:String(message).slice(0,1000),      inline:false },
       ],
-      footer:{ text:'4reels.xyz' }
+      footer:{ text:'4reelscc' }
     }]
   });
   res.json({ ok:true });
