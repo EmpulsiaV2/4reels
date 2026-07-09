@@ -252,12 +252,12 @@
               <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:12px">
                 <div class="settings-row-desc">Choose a colour for your avatar when no photo is set</div>
                 <div class="color-swatches" id="avatar-color-swatches">
-                  <div class="color-swatch" data-color="#ff5d4e" style="background:#ff5d4e"></div>
+                  <div class="color-swatch" data-color="#3b82f6" style="background:#3b82f6"></div>
                   <div class="color-swatch" data-color="#4f8dff" style="background:#4f8dff"></div>
-                  <div class="color-swatch" data-color="#a463ff" style="background:#a463ff"></div>
+                  <div class="color-swatch" data-color="#8b5cf6" style="background:#8b5cf6"></div>
                   <div class="color-swatch" data-color="#3ddc84" style="background:#3ddc84"></div>
-                  <div class="color-swatch" data-color="#ffb648" style="background:#ffb648"></div>
-                  <div class="color-swatch" data-color="#ff6ec7" style="background:#ff6ec7"></div>
+                  <div class="color-swatch" data-color="#f59e0b" style="background:#f59e0b"></div>
+                  <div class="color-swatch" data-color="#ec4899" style="background:#ec4899"></div>
                   <div class="color-swatch" data-color="#2d303d" style="background:#2d303d"></div>
                   <div class="color-swatch" data-color="#5c5e6b" style="background:#5c5e6b"></div>
                 </div>
@@ -296,12 +296,12 @@
               <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:12px">
                 <div class="settings-row-desc">Changes the highlight colour throughout the site</div>
                 <div class="color-swatches" id="accent-swatches">
-                  <div class="color-swatch active" data-accent="coral" style="background:#ff5d4e" title="Coral (default)"></div>
-                  <div class="color-swatch" data-accent="blue" style="background:#4f8dff" title="Blue"></div>
-                  <div class="color-swatch" data-accent="violet" style="background:#a463ff" title="Violet"></div>
+                  <div class="color-swatch active" data-accent="blue" style="background:#3b82f6" title="Blue (default)"></div>
+                  <div class="color-swatch" data-accent="coral" style="background:#ff5d4e" title="Coral"></div>
+                  <div class="color-swatch" data-accent="violet" style="background:#8b5cf6" title="Violet"></div>
                   <div class="color-swatch" data-accent="emerald" style="background:#3ddc84" title="Emerald"></div>
-                  <div class="color-swatch" data-accent="amber" style="background:#ffb648" title="Amber"></div>
-                  <div class="color-swatch" data-accent="pink" style="background:#ff6ec7" title="Pink"></div>
+                  <div class="color-swatch" data-accent="amber" style="background:#f59e0b" title="Amber"></div>
+                  <div class="color-swatch" data-accent="pink" style="background:#ec4899" title="Pink"></div>
                 </div>
               </div>
             </div>
@@ -326,6 +326,62 @@
             </div>
           </div>
         </div>
+
+        <div class="profile-tab-content" id="tab-playback">
+          <div class="settings-section">
+            <div class="settings-section-title">Player Preferences</div>
+            <div class="settings-card">
+              <div class="settings-row">
+                <div class="settings-row-info"><div class="settings-row-label">Default server</div><div class="settings-row-desc">Which streaming server to use by default</div></div>
+                <select class="settings-select" id="sel-default-server">
+                  <option value="0">Filmu</option><option value="1">VidUp</option><option value="2">VidCore</option><option value="3">VidEasy</option><option value="4">VidPlus</option><option value="5">Vidsrc0</option><option value="6">AdRock</option><option value="7">VidNest</option><option value="8">VidLink</option><option value="9">Vidify</option><option value="10">Vidzee</option>
+                </select>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info"><div class="settings-row-label">Autoplay next episode</div><div class="settings-row-desc">Automatically start the next episode in a series</div></div>
+                <label class="toggle"><input type="checkbox" id="toggle-autoplay" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info"><div class="settings-row-label">Remember playback position</div><div class="settings-row-desc">Resume movies from where you left off</div></div>
+                <label class="toggle"><input type="checkbox" id="toggle-remember-pos" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info"><div class="settings-row-label">Show skip intro button</div><div class="settings-row-desc">Display a button to skip opening sequences</div></div>
+                <label class="toggle"><input type="checkbox" id="toggle-skip-intro" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-tab-content" id="tab-privacy">
+          <div class="settings-section">
+            <div class="settings-section-title">Activity &amp; History</div>
+            <div class="settings-card">
+              <div class="settings-row">
+                <div class="settings-row-info"><div class="settings-row-label">Track watch history</div><div class="settings-row-desc">Save movies to Continue Watching as you stream</div></div>
+                <label class="toggle"><input type="checkbox" id="toggle-track-history" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-info"><div class="settings-row-label">Show safe browsing banner</div><div class="settings-row-desc">Display the "You're Safe Here" info banner on the home page</div></div>
+                <label class="toggle"><input type="checkbox" id="toggle-safe-banner" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+              </div>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-section-title">About</div>
+            <div class="settings-card">
+              <div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Version</div></div><span style="font-size:.82rem;color:var(--tx2);font-family:var(--fh);font-weight:600">v3.0.0</span></div>
+              <div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Accounts</div><div class="settings-row-desc">Stored in Neon Postgres</div></div><span style="font-size:.82rem;color:var(--ok);font-weight:600">Cloud DB</span></div>
+              <div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Streaming data</div></div><span style="font-size:.82rem;color:var(--tx2)">TMDB + 11 servers</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div><!-- /shell -->
 
         <div class="profile-tab-content" id="tab-playback">
           <div class="settings-section">

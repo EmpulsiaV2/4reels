@@ -1135,3 +1135,57 @@ footer{background:var(--s1);border-top:1px solid var(--bdr);margin-left:var(--sb
 .sb-party-btn:hover{color:var(--tx1)!important;background:var(--s3)!important}
 .sb-party-btn svg{opacity:.7;transition:opacity var(--t)}
 .sb-party-btn:hover svg{opacity:1}
+
+
+/* ── FIX: Ensure sidebar doesn't create gap ───────────── */
+.shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sb);
+  background: var(--s1);
+  border-right: 1px solid var(--bdr);
+  z-index: 200;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+#app {
+  flex: 1;
+  margin-left: var(--sb);
+  width: calc(100% - var(--sb));
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Make sure views don't overflow */
+.view {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+    transition: transform .22s ease;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  #app {
+    margin-left: 0;
+    width: 100%;
+  }
+}
