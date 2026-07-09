@@ -11,7 +11,7 @@
 })();
 
 const SERVERS = [
-  { id:'strigil', name:'Strigil',  badge:'HD', url: id=>`https://vidsrc.cc/v2/embed/movie/${id}` },
+  { id:'filmu', name:'Filmu',  badge:'HD', url: id=>`https://embed.filmu.in/movie/${id}` },
   { id:'vidup',   name:'VidUp',    badge:'HD', url: id=>`https://vidsrc.me/embed/movie/${id}` },
   { id:'vidcore', name:'VidCore',  badge:'4K', url: id=>`https://vidsrc.pro/embed/movie/${id}` },
   { id:'videasy', name:'VidEasy',  badge:'HD', url: id=>`https://player.videasy.net/movie/${id}` },
