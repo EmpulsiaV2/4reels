@@ -714,6 +714,18 @@ a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
 @media(max-width:768px){
 
+  /* THE core mobile bug: .shell is `display:flex` with no
+     flex-direction (defaults to row). .mobile-bar, .mob-nav
+     and #app are flex siblings, so on mobile — where
+     .mobile-bar has real content width — #app gets squeezed
+     into a narrow leftover column instead of stacking below
+     the header full-width. This is what caused the hero/rows
+     to render as a thin, word-wrapped strip. Desktop is
+     unaffected: .sidebar is position:fixed (out of flow
+     regardless of direction) and .mobile-bar is display:none
+     there, so #app was already effectively the only item. */
+  .shell{flex-direction:column}
+
   /* Search panel — was nested in .sidebar (display:none on
      mobile) so it could never appear once opened by JS.
      It's now a sibling in the DOM; make it a full-width
@@ -770,4 +782,126 @@ a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 @media(max-width:768px) and (max-height:420px){
   .feature-strip{height:auto;min-height:280px}
   .auth-modal{max-height:80vh}
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE DROPDOWN + SEARCH BAR — redesign
+   Scoped to max-width:768px only. On desktop .mobile-bar
+   is display:none (hamburger is unreachable, .mob-nav.open
+   never gets applied) so none of this is ever visible or
+   participates in layout there.
+   ═══════════════════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* Turn the dropdown into a proper floating overlay panel
+     instead of an in-flow block that pushes content down and
+     clips at a fixed max-height. It now hangs below the top
+     bar and scrolls internally, so it can NEVER cut items off
+     regardless of how many links are in it or how short the
+     phone screen is. */
+  .mob-nav{
+    position:fixed;
+    top:60px;
+    left:0;right:0;
+    max-height:0;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    background:rgba(10,10,13,.98);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+    z-index:250;
+    transition:max-height .25s var(--ease);
+  }
+  .mob-nav.open{
+    max-height:calc(100vh - 60px);
+    max-height:calc(100dvh - 60px);
+  }
+
+  .mob-nav ul{
+    padding:10px 10px calc(20px + env(safe-area-inset-bottom));
+    gap:2px;
+  }
+
+  .mob-nav-sep{
+    height:1px;
+    margin:8px 10px;
+    background:rgba(255,255,255,.08);
+    list-style:none;
+  }
+
+  .mob-nav a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:13px 14px;
+    font-size:.92rem;
+    font-weight:500;
+    color:rgba(255,255,255,.6);
+    border-radius:10px;
+  }
+  .mob-nav a svg{
+    flex-shrink:0;
+    color:rgba(255,255,255,.4);
+    transition:color .14s;
+  }
+  .mob-nav a:hover,.mob-nav a:active{
+    background:rgba(255,255,255,.07);
+    color:#fff;
+  }
+  .mob-nav a:hover svg,.mob-nav a:active svg{
+    color:rgba(255,255,255,.85);
+  }
+  .mob-nav a.active{
+    background:rgba(255,255,255,.09);
+    color:#fff;
+  }
+  .mob-nav a.active svg{color:#fff}
+
+  /* Search bar — bigger, clearer, easier to hit with a thumb.
+     !important is required because the desktop version of this
+     panel is set via inline styles (it's shared with the
+     desktop drawer triggered from the sidebar), which otherwise
+     always win over an external stylesheet. */
+  #sb-search-panel{
+    left:0 !important;
+    width:100% !important;
+    background:rgba(8,8,10,.98) !important;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+  }
+  #search-panel-header{
+    padding:16px !important;
+  }
+  #search-box{
+    padding:12px 14px !important;
+    border-radius:12px !important;
+    background:rgba(255,255,255,.07) !important;
+    border-color:rgba(255,255,255,.16) !important;
+  }
+  #search-box svg{
+    stroke:rgba(255,255,255,.55) !important;
+    width:16px !important;
+    height:16px !important;
+  }
+  #search-input{
+    font-size:16px !important;
+  }
+  #search-input::placeholder{
+    color:rgba(255,255,255,.32);
+  }
+  #search-close{
+    width:30px !important;
+    height:30px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    font-size:1rem !important;
+    color:rgba(255,255,255,.5) !important;
+    border-radius:50% !important;
+  }
+  #search-close:active{
+    background:rgba(255,255,255,.1) !important;
+  }
 }

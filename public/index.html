@@ -82,8 +82,8 @@
 
   <!-- Inline search drop (hidden by default) — sibling of .sidebar so it still works when the sidebar is hidden on mobile -->
   <div id="sb-search-panel" style="display:none;position:fixed;top:0;left:64px;width:300px;height:100vh;background:rgba(0,0,0,.96);border-right:1px solid rgba(255,255,255,.07);z-index:500;flex-direction:column">
-    <div style="padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,.07)">
-      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 11px">
+    <div id="search-panel-header" style="padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div id="search-box" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 11px">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" id="search-input" placeholder="Search movies, series…"
           autocomplete="off" spellcheck="false"
@@ -108,14 +108,39 @@
 
   <div class="mob-nav" id="mob-nav">
     <ul>
-      <li><a href="/" data-route="home">Home</a></li>
-      <li><a href="/movies" data-route="movies">Movies</a></li>
-      <li><a href="/series" data-route="series">Series</a></li>
-      <li><a href="/sparks" data-route="sparks">Sparks</a></li>
-      <li><a href="/genres" data-route="genres">Genres</a></li>
-      <li><a href="/my-list" data-route="my-list">My List</a></li>
-      <li><a href="/continue-watching" data-route="continue-watching">Continue Watching</a></li>
-      <li><a href="/profile" data-route="profile">Profile &amp; Settings</a></li>
+      <li><a href="/" data-route="home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+        <span>Home</span>
+      </a></li>
+      <li><a href="/movies" data-route="movies">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>
+        <span>Movies</span>
+      </a></li>
+      <li><a href="/series" data-route="series">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span>Series</span>
+      </a></li>
+      <li><a href="/sparks" data-route="sparks">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Sparks</span>
+      </a></li>
+      <li><a href="/genres" data-route="genres">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Genres</span>
+      </a></li>
+      <li><a href="/my-list" data-route="my-list">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span>My List</span>
+      </a></li>
+      <li><a href="/continue-watching" data-route="continue-watching">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Continue Watching</span>
+      </a></li>
+      <li class="mob-nav-sep" role="separator"></li>
+      <li><a href="/profile" data-route="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span>Profile &amp; Settings</span>
+      </a></li>
     </ul>
   </div>
 
