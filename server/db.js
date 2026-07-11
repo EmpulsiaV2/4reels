@@ -43,6 +43,50 @@ async function ensureSchema() {
 
 
   await p.query(`
+  CREATE TABLE IF NOT EXISTS watch_history (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    movie_id TEXT NOT NULL,
+    title TEXT,
+    poster TEXT,
+    year TEXT,
+    rating TEXT,
+    progress INTEGER DEFAULT 0,
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE(user_id, movie_id)
+  );
+`);
+
+await p.query(`
+  CREATE TABLE IF NOT EXISTS my_list (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    movie_id TEXT NOT NULL,
+    movie_title TEXT,
+    poster TEXT,
+    year TEXT,
+    rating TEXT,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE(user_id, movie_id)
+  );
+`);
+
+  await p.query(`
+  CREATE TABLE IF NOT EXISTS continue_watching (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    movie_id TEXT NOT NULL,
+    movie_title TEXT,
+    poster TEXT,
+    year TEXT,
+    rating TEXT,
+    progress INTEGER DEFAULT 0,
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE(user_id, movie_id)
+  );
+`);
+
+  await p.query(`
     CREATE INDEX IF NOT EXISTS idx_users_username 
     ON users (lower(username));
   `);
@@ -97,6 +141,7 @@ const FIELD_MAP = {
 // expose pool for party.js
 Object.defineProperty(module.exports, '_pool', { get: () => pool });
 module.exports = {
+
   async getUsers() {
     const p = getPool();
     const { rows } = await p.query('SELECT * FROM users ORDER BY created_at ASC');
@@ -157,6 +202,106 @@ module.exports = {
     return mapRow(rows[0]);
   },
 
+
+async getWatchHistory(userId) {
+  const p = getPool();
+
+  const {rows} = await p.query(`
+    SELECT *
+    FROM watch_history
+    WHERE user_id=$1
+    ORDER BY updated_at DESC
+  `,[Number(userId)]);
+
+  return rows;
+},
+
+async deleteWatch(userId, movieId) {
+  const p = getPool();
+
+  await p.query(
+    `DELETE FROM watch_history WHERE user_id=$1 AND movie_id=$2`,
+    [Number(userId), String(movieId)]
+  );
+},
+
+async clearWatch(userId) {
+  const p = getPool();
+
+  await p.query(
+    `DELETE FROM watch_history WHERE user_id=$1`,
+    [Number(userId)]
+  );
+},
+
+async saveMyList(userId, movie) {
+  const p = getPool();
+
+  await p.query(`
+    INSERT INTO my_list
+    (
+      user_id,
+      movie_id,
+      movie_title,
+      poster,
+      year,
+      rating
+    )
+    VALUES ($1,$2,$3,$4,$5,$6)
+
+    ON CONFLICT (user_id, movie_id)
+    DO NOTHING
+  `,
+  [
+    Number(userId),
+    String(movie.tmdbId),
+    movie.title || '',
+    movie.poster || '',
+    movie.year || '',
+    movie.rating || ''
+  ]);
+},
+
+
+async getMyList(userId) {
+  const p = getPool();
+
+  const {rows} = await p.query(`
+    SELECT *
+    FROM my_list
+    WHERE user_id=$1
+    ORDER BY created_at DESC
+  `,
+  [Number(userId)]);
+
+  return rows;
+},
+
+
+async deleteMyList(userId, movieId) {
+  const p = getPool();
+
+  await p.query(`
+    DELETE FROM my_list
+    WHERE user_id=$1 AND movie_id=$2
+  `,
+  [
+    Number(userId),
+    String(movieId)
+  ]);
+},
+
+
+async clearMyList(userId) {
+  const p = getPool();
+
+  await p.query(`
+    DELETE FROM my_list
+    WHERE user_id=$1
+  `,
+  [Number(userId)]);
+},
+
   async deleteUser(id) {
     const p = getPool();
     await p.query('DELETE FROM users WHERE id = $1', [Number(id)]);
@@ -179,7 +324,80 @@ module.exports = {
   ]);
 },
 
+async saveContinueWatching(userId, movie) {
+  const p = getPool();
 
+  await p.query(`
+    INSERT INTO continue_watching
+    (
+      user_id,
+      movie_id,
+      movie_title,
+      poster,
+      year,
+      rating,
+      progress,
+      updated_at
+    )
+    VALUES ($1,$2,$3,$4,$5,$6,$7,NOW())
+
+    ON CONFLICT (user_id, movie_id)
+    DO UPDATE SET
+      movie_title = EXCLUDED.movie_title,
+      poster = EXCLUDED.poster,
+      year = EXCLUDED.year,
+      rating = EXCLUDED.rating,
+      progress = EXCLUDED.progress,
+      updated_at = NOW()
+  `,
+  [
+    Number(userId),
+    String(movie.tmdbId),
+    movie.title || '',
+    movie.poster || '',
+    movie.year || '',
+    movie.rating || '',
+    movie.progress || 0
+  ]);
+},
+
+
+async getContinueWatching(userId) {
+  const p = getPool();
+
+  const {rows} = await p.query(`
+    SELECT *
+    FROM continue_watching
+    WHERE user_id=$1
+    ORDER BY updated_at DESC
+  `,
+  [Number(userId)]);
+
+  return rows;
+},
+
+
+async deleteContinueWatching(userId,movieId) {
+  const p=getPool();
+
+  await p.query(`
+    DELETE FROM continue_watching
+    WHERE user_id=$1 AND movie_id=$2
+  `,
+  [
+    Number(userId),
+    movieId
+  ]);
+},
+
+async clearContinueWatching(userId) {
+  const p = getPool();
+
+  await p.query(
+    `DELETE FROM continue_watching WHERE user_id=$1`,
+    [Number(userId)]
+  );
+},
 
   async seedAdmin() {
     await ensureSchema();

@@ -276,8 +276,27 @@ img{display:block;max-width:100%}
 .row-all{display:flex;align-items:center;gap:4px;font-size:.8rem;color:rgba(255,255,255,.35);transition:color .14s}
 .row-all svg{width:14px;height:14px}
 .row-all:hover{color:rgba(255,255,255,.7)}
-.cards-row,.movie-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-.cards-row::-webkit-scrollbar,.movie-row::-webkit-scrollbar{display:none}
+.cards-row,
+.movie-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+}
+
+.cards-row::-webkit-scrollbar,
+.movie-row::-webkit-scrollbar {
+    display: none;
+}
+
+.movie-row > *,
+.cards-row > * {
+    flex: 0 0 auto;
+}
 
 /* ══════════════════════════════════════════════════
    CARD — exact from preview

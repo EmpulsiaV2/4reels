@@ -54,9 +54,36 @@ const Auth = (() => {
   let user = null;
   try { user = JSON.parse(localStorage.getItem('4reels_user') || 'null'); } catch {}
 
-  function save(u) { user = u; if (u) localStorage.setItem('4reels_user', JSON.stringify(u)); else localStorage.removeItem('4reels_user'); }
-  function get()   { return user; }
-  function token() { try { return JSON.parse(localStorage.getItem('4reels_user')||'null')?.token || null; } catch { return null; } }
+  function save(u) {
+    user = u;
+
+    if (u) {
+      localStorage.setItem('4reels_user', JSON.stringify(u));
+
+      if (u.token) {
+        localStorage.setItem('4reels_token', u.token);
+      }
+    } else {
+      localStorage.removeItem('4reels_user');
+      localStorage.removeItem('4reels_token');
+    }
+  }
+
+  function get() {
+    return user;
+  }
+
+  function token() {
+  try {
+    return JSON.parse(localStorage.getItem('4reels_user') || 'null')?.token || null;
+  } catch {
+    return null;
+  }
+}
+
+  function token() {
+    return localStorage.getItem('4reels_token');
+  }
 
   async function req(path, body) {
     const r = await fetch('/api/auth' + path, {
@@ -88,7 +115,11 @@ const Auth = (() => {
     updateSidebar(); return d;
   }
 
-  function logout() { save(null); updateSidebar(); }
+  function logout() {
+    save(null);
+    localStorage.removeItem('4reels_token');
+    updateSidebar();
+  }
 
   function updateSidebar() {
     const u = get();
@@ -233,28 +264,170 @@ const LS = {
 };
 
 /* continue watching */
-function cwGet()          { return LS.get('4reels_cw') || []; }
-function cwAdd(movie)     {
-  const prefs = LS.get('4reels_prefs') || {};
-  if (prefs.trackHistory === false) return;
-  let cw = cwGet().filter(m => m.tmdbId !== movie.tmdbId);
-  cw.unshift({ tmdbId: movie.tmdbId, title: movie.title, poster: movie.poster, year: movie.year, rating: movie.rating ? Number(movie.rating).toFixed(1) : null, progress: movie.progress || 15 });
-  if (cw.length > 20) cw = cw.slice(0, 20);
-  LS.set('4reels_cw', cw);
+/* continue watching */
+
+async function cwGet(){
+
+  const token = JSON.parse(localStorage.getItem('4reels_user') || 'null')?.token;
+
+  if(!token){
+    return LS.get('4reels_cw') || [];
+  }
+
+  const res = await fetch('/api/auth/continue',{
+    headers:{
+      Authorization:`Bearer ${token}`
+    }
+  });
+
+  if(!res.ok) return [];
+
+  return await res.json();
 }
-function cwRemove(id)     { LS.set('4reels_cw', cwGet().filter(m => m.tmdbId !== id)); }
-function cwClear()        { LS.remove('4reels_cw'); }
+
+
+async function cwAdd(movie){
+
+  const prefs = LS.get('4reels_prefs') || {};
+  if(prefs.trackHistory === false) return;
+
+
+  const item = {
+    tmdbId: movie.tmdbId,
+    title: movie.title,
+    poster: movie.poster,
+    year: movie.year,
+    rating: movie.rating ? Number(movie.rating).toFixed(1) : null,
+    progress: movie.progress || 15
+  };
+
+
+  const token = JSON.parse(localStorage.getItem('4reels_user') || 'null')?.token;
+
+
+  if(token){
+
+    await fetch('/api/auth/continue',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${token}`
+      },
+      body:JSON.stringify(item)
+    });
+
+    return;
+  }
+
+
+  let cw = LS.get('4reels_cw') || [];
+
+  cw = cw.filter(m => m.tmdbId !== item.tmdbId);
+
+  cw.unshift(item);
+
+  LS.set('4reels_cw',cw.slice(0,20));
+
+}
+
+
+async function cwRemove(id){
+
+  const token = JSON.parse(localStorage.getItem('4reels_user') || 'null')?.token;
+
+  if(token){
+
+    await fetch(`/api/auth/continue/${id}`,{
+      method:'DELETE',
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    });
+
+    return;
+  }
+
+
+  LS.set(
+    '4reels_cw',
+    (LS.get('4reels_cw')||[])
+      .filter(m=>m.tmdbId!==id)
+  );
+
+}
+
+
+async function cwClear(){
+
+  const token = JSON.parse(localStorage.getItem('4reels_user') || 'null')?.token;
+
+  if(!token){
+    LS.remove('4reels_cw');
+    return;
+  }
+
+
+  const movies = await cwGet();
+
+  for(const movie of movies){
+    await cwRemove(movie.tmdbId);
+  }
+
+}
 
 /* my list */
 function listGet()        { return LS.get('4reels_list') || []; }
-function listToggle(movie){
+
+async function listToggle(movie){
+
+  const token = JSON.parse(localStorage.getItem('4reels_user'))?.token;
+
+  if(token){
+
+    const list = await Auth.authReq('/list');
+
+    const exists = list.some(
+      m => m.movie_id == movie.tmdbId
+    );
+
+    if(exists){
+
+      await Auth.authReq(
+        '/list/' + movie.tmdbId,
+        'DELETE'
+      );
+
+      return false;
+
+    } else {
+
+      await Auth.authReq(
+        '/list',
+        'POST',
+        movie
+      );
+
+      return true;
+    }
+  }
+
+
   let list = listGet();
-  const has = list.some(m => m.tmdbId === movie.tmdbId);
-  if (has) list = list.filter(m => m.tmdbId !== movie.tmdbId);
-  else list.unshift({ tmdbId: movie.tmdbId, title: movie.title, poster: movie.poster, year: movie.year, rating: movie.rating });
-  LS.set('4reels_list', list);
+
+  const has = list.some(
+    m => m.tmdbId === movie.tmdbId
+  );
+
+  if(has)
+    list=list.filter(m=>m.tmdbId!==movie.tmdbId);
+  else
+    list.unshift(movie);
+
+  LS.set('4reels_list',list);
+
   return !has;
 }
+
 function listHas(id)      { return listGet().some(m => m.tmdbId === id); }
 
 /* prefs */
@@ -559,7 +732,17 @@ async function initHomeRows() {
   };
 
   // Continue watching
-  const cw = cwGet();
+  const cwRaw = await Auth.authReq('/continue');
+
+  const cw = cwRaw.map(m => ({
+    tmdbId: m.movie_id,
+    title: m.movie_title,
+    poster: m.poster,
+    year: m.year,
+    rating: m.rating,
+    progress: m.progress
+  }));
+
   if (cw.length) {
     const sec = document.createElement('div');
     sec.className = 'row-sec';
@@ -571,7 +754,10 @@ async function initHomeRows() {
       <div class="movie-row">${cw.map(cwCardHTML).join('')}</div>`;
     wrap.appendChild(sec);
     wireCards(sec);
-    $('cw-clear-btn')?.addEventListener('click', () => { cwClear(); sec.remove(); });
+    $('cw-clear-btn')?.addEventListener('click', async () => {
+  await Auth.authReq('/continue', 'DELETE');
+  sec.remove();
+});
   }
 
   try {
@@ -727,10 +913,18 @@ async function showGenrePage(genreId) {
 /* ══════════════════════════════════════════════════════
    MY LIST
    ══════════════════════════════════════════════════════ */
-function showMyList() {
+async function showMyList() {
   showView('view-my-list');
   document.title = '4Reels — My List';
-  const list = listGet();
+  const listRaw = await Auth.authReq('/list');
+
+  const list = listRaw.map(m => ({
+    tmdbId:m.movie_id,
+    title:m.movie_title,
+    poster:m.poster,
+    year:m.year,
+    rating:m.rating
+  }));
   const grid = $('mylist-grid');
   const sub  = $('mylist-sub');
   const clrBtn = $('mylist-clear');
@@ -1038,7 +1232,7 @@ async function showSparks() {
 /* ══════════════════════════════════════════════════════
    CONTINUE WATCHING — dedicated page
    ══════════════════════════════════════════════════════ */
-function showContinueWatching() {
+async function showContinueWatching() {
   showView('view-grid');
   document.title = '4Reels — Continue Watching';
   const titleEl = $('grid-title'); if(titleEl) titleEl.textContent = 'Continue Watching';
@@ -1047,7 +1241,17 @@ function showContinueWatching() {
   const filEl = $('grid-filters'); if(filEl) filEl.style.display = 'none';
   const pag = $('grid-pag'); if(pag) pag.innerHTML = '';
   const grid = $('grid-movies'); if(!grid) return;
-  const cw = cwGet();
+  const cwRaw = await Auth.authReq('/continue');
+
+  const cw = cwRaw.map(m => ({
+    tmdbId: m.movie_id,
+    title: m.movie_title,
+    poster: m.poster,
+    year: m.year,
+    rating: m.rating,
+    progress: m.progress
+  }));
+
   if (!cw.length) {
     grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:rgba(255,255,255,.22)"><div style="font-size:2rem;margin-bottom:12px">⏱️</div><div style="font-family:Inter,sans-serif;font-size:.92rem;font-weight:500;margin-bottom:6px;color:rgba(255,255,255,.4)">Nothing in progress yet</div><div style="font-size:.8rem">Start watching and it will appear here.</div></div>';
     return;
@@ -1064,7 +1268,14 @@ function showContinueWatching() {
 /* ══════════════════════════════════════════════════════
    PROFILE
    ══════════════════════════════════════════════════════ */
-function showProfile() {
+async function showProfile() {
+  let cw = [];
+
+  try {
+    cw = await Auth.authReq('/continue');
+  } catch(e) {
+    console.log(e);
+  }
   const u = Auth.get();
   if (!u) { Auth.openModal('login'); return; }
   showView('view-profile');
@@ -1073,12 +1284,12 @@ function showProfile() {
   // Fill in current values
   const el = id => $(id);
   if (el('profile-display-name')) el('profile-display-name').textContent = u.displayName || u.username;
-  if (el('profile-handle'))       el('profile-handle').textContent       = `@${u.username} · Member since ${new Date(u.createdAt||Date.now()).getFullYear()}`;
-  if (el('input-display-name'))   el('input-display-name').value          = u.displayName || '';
-  if (el('input-bio'))            el('input-bio').value                   = u.bio || '';
-  if (el('stat-watched'))         el('stat-watched').textContent          = cwGet().length;
-  if (el('stat-list'))            el('stat-list').textContent             = listGet().length;
-  if (el('stat-hours'))           el('stat-hours').textContent            = Math.floor(cwGet().length * 1.8);
+  if (el('profile-handle'))       el('profile-handle').textContent = `@${u.username} · Member since ${new Date(u.createdAt||Date.now()).getFullYear()}`;
+  if (el('input-display-name'))   el('input-display-name').value = u.displayName || '';
+  if (el('input-bio'))            el('input-bio').value = u.bio || '';
+  if (el('stat-watched'))         el('stat-watched').textContent = cw.length;
+  if (el('stat-list'))            el('stat-list').textContent = listGet().length;
+  if (el('stat-hours'))           el('stat-hours').textContent = Math.floor(cw.length * 1.8);
 
   // Avatar
   if (el('profile-avatar-initials-big'))

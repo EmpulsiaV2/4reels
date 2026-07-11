@@ -50,6 +50,27 @@ router.post('/register', wrap(async (req, res) => {
   res.json({ token: sign(user), user: safe(user) });
 }));
 
+router.get('/continue', requireAuth, wrap(async(req,res)=>{
+
+ const movies = await db.getContinueWatching(req.user.id);
+
+ res.json(movies);
+
+}));
+
+
+router.delete('/continue/:id', requireAuth, wrap(async(req,res)=>{
+
+ await db.deleteContinueWatching(
+   req.user.id,
+   req.params.id
+ );
+
+ res.json({ok:true});
+
+}));
+
+
 // ── Login ─────────────────────────────────────────────
 router.post('/login', wrap(async (req, res) => {
   const { username, password } = req.body || {};
@@ -157,6 +178,99 @@ router.get('/admin/online', requireAuth, requireAdmin, wrap(async(req,res)=>{
   const users = await db.getOnlineUsers();
   res.json(users);
 }));
+
+// ── Continue Watching ────────────────────────────────
+
+router.post('/continue', requireAuth, wrap(async (req,res)=>{
+
+  await db.saveContinueWatching(
+    req.user.id,
+    req.body
+  );
+
+  res.json({ok:true});
+
+}));
+
+
+router.get('/continue', requireAuth, wrap(async(req,res)=>{
+
+  const movies = await db.getContinueWatching(
+    req.user.id
+  );
+
+  res.json(movies);
+
+}));
+
+router.get('/list', requireAuth, wrap(async(req,res)=>{
+  const list = await db.getMyList(req.user.id);
+  res.json(list);
+}));
+
+
+router.post('/list', requireAuth, wrap(async(req,res)=>{
+  await db.saveMyList(
+    req.user.id,
+    req.body
+  );
+
+  res.json({ok:true});
+}));
+
+
+router.delete('/list/:id', requireAuth, wrap(async(req,res)=>{
+  await db.deleteMyList(
+    req.user.id,
+    req.params.id
+  );
+
+  res.json({ok:true});
+}));
+
+
+router.delete('/list', requireAuth, wrap(async(req,res)=>{
+  await db.clearMyList(req.user.id);
+
+  res.json({ok:true});
+}));
+
+router.delete('/continue/:id', requireAuth, wrap(async(req,res)=>{
+
+  await db.deleteContinueWatching(
+    req.user.id,
+    req.params.id
+  );
+
+  res.json({ok:true});
+
+}));
+
+router.delete('/continue', requireAuth, wrap(async (req,res)=>{
+  await db.clearContinueWatching(req.user.id);
+  res.json({ok:true});
+}));
+
+router.get('/watch-history', requireAuth, wrap(async(req,res)=>{
+  const data = await db.getWatchHistory(req.user.id);
+  res.json(data);
+}));
+
+router.post('/watch-history', requireAuth, wrap(async(req,res)=>{
+  await db.saveWatch(req.user.id, req.body);
+  res.json({ok:true});
+}));
+
+router.delete('/watch-history/:id', requireAuth, wrap(async(req,res)=>{
+  await db.deleteWatch(req.user.id, req.params.id);
+  res.json({ok:true});
+}));
+
+router.delete('/watch-history', requireAuth, wrap(async(req,res)=>{
+  await db.clearWatch(req.user.id);
+  res.json({ok:true});
+}));
+
 
 module.exports = router;
 module.exports.requireAuth  = requireAuth;
