@@ -1,7 +1,7 @@
 {
   "name": "4reels",
-  "version": "3.1.0",
-  "description": "Free HD movie streaming \u2014 4reelscc",
+  "version": "3.2.0",
+  "description": "Free HD movie streaming \u2014 4reels.cc",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

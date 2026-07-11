@@ -23,6 +23,7 @@ function getPool() {
 // ── Schema ────────────────────────────────────────────
 async function ensureSchema() {
   const p = getPool();
+
   await p.query(`
     CREATE TABLE IF NOT EXISTS users (
       id             SERIAL PRIMARY KEY,
@@ -39,6 +40,23 @@ async function ensureSchema() {
       created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);
+
+
+  await p.query(`
+    CREATE INDEX IF NOT EXISTS idx_users_username 
+    ON users (lower(username));
+  `);
+
+  await p.query(`
+    CREATE INDEX IF NOT EXISTS idx_users_email 
+    ON users (lower(email));
+  `);
+
+  await p.query(`
+    CREATE INDEX IF NOT EXISTS idx_live_sessions_seen 
+    ON live_sessions(last_seen);
+  `);
+
   await p.query(`CREATE INDEX IF NOT EXISTS idx_users_username ON users (lower(username));`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_users_email    ON users (lower(email));`);
 }
@@ -64,18 +82,20 @@ function mapRow(row) {
 
 // ── Field mapping for patch updates ────────────────────
 const FIELD_MAP = {
-  username:     'username',
-  email:        'email',
+  username: 'username',
+  email: 'email',
   passwordHash: 'password_hash',
-  role:         'role',
-  displayName:  'display_name',
-  bio:          'bio',
-  avatarColor:  'avatar_color',
+  role: 'role',
+  displayName: 'display_name',
+  avatarColor: 'avatar_color',
   avatarBase64: 'avatar_base64',
-  badge:        'badge',
-  banned:       'banned',
+  bio: 'bio',
+  badge: 'badge',
+  banned: 'banned'
 };
 
+// expose pool for party.js
+Object.defineProperty(module.exports, '_pool', { get: () => pool });
 module.exports = {
   async getUsers() {
     const p = getPool();
@@ -141,6 +161,25 @@ module.exports = {
     const p = getPool();
     await p.query('DELETE FROM users WHERE id = $1', [Number(id)]);
   },
+
+
+  async updatePresence(data) {
+  const p = getPool();
+
+  await p.query(`
+    INSERT INTO live_sessions
+    (user_id, guest_id, movie_id, movie_title, last_seen)
+    VALUES ($1,$2,$3,$4,NOW())
+  `,
+  [
+    data.userId,
+    data.guestId,
+    data.movieId || null,
+    data.movieTitle || null
+  ]);
+},
+
+
 
   async seedAdmin() {
     await ensureSchema();

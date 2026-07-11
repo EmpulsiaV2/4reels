@@ -1,6 +1,6 @@
 /**
  * Movie service — TMDB API (free key required, stored in .env)
- * Streams via player.videasy.net using numeric TMDB IDs
+ * Streams via player.FilmU.net using numeric TMDB IDs
  */
 const axios     = require('axios');
 const NodeCache = require('node-cache');
@@ -97,8 +97,14 @@ async function trending(page=1) {
 async function popular(page=1) {
   return paged(await tmdbGet('/movie/popular', { page }));
 }
+async function popularTV(page=1) {
+  return paged(await tmdbGet('/tv/popular', { page }));
+}
 async function topRated(page=1) {
   return paged(await tmdbGet('/movie/top_rated', { page }));
+}
+async function topRatedTV(page=1) {
+  return paged(await tmdbGet('/tv/top_rated', { page }));
 }
 async function nowPlaying(page=1) {
   return paged(await tmdbGet('/movie/now_playing', { page }));
@@ -112,6 +118,42 @@ async function byGenre(genreId, page=1) {
     page, 'vote_count.gte': 50,
   }));
 }
+
+async function discover({
+  page = 1,
+  genre = '',
+  sort = 'popular',
+  rating = '',
+  type = 'movies'
+} = {}) {
+
+  const isTV = type === 'series';
+
+  const params = {
+    page,
+    sort_by: sort === 'popular'
+      ? 'popularity.desc'
+      : sort === 'rating'
+      ? 'vote_average.desc'
+      : 'popularity.desc',
+    'vote_count.gte': 50,
+  };
+
+  if (genre) {
+    params.with_genres = genre;
+  }
+
+  if (rating) {
+    params['vote_average.gte'] = rating;
+  }
+
+  const endpoint = isTV
+    ? '/discover/tv'
+    : '/discover/movie';
+
+  return paged(await tmdbGet(endpoint, params));
+}
+
 async function search(q, page=1) {
   const data = await tmdbGet('/search/movie', { query: q, page, include_adult: false }, 60);
   return paged(data);
@@ -216,6 +258,17 @@ async function home() {
 }
 
 module.exports = {
-  trending, popular, topRated, nowPlaying, upcoming,
-  byGenre, search, details, genres, home,
+  trending,
+  popular,
+  popularTV,
+  topRated,
+  topRatedTV,
+  nowPlaying,
+  upcoming,
+  byGenre,
+  discover,
+  search,
+  details,
+  genres,
+  home,
 };

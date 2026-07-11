@@ -85,7 +85,11 @@ router.patch('/me', requireAuth, wrap(async (req, res) => {
       return res.status(400).json({ error: 'Image too large (max 2MB).' });
     patch.avatarBase64 = avatarBase64;
   }
+  console.log('[AUTH UPDATE]', req.user.id, patch);
+
   const updated = await db.updateUser(req.user.id, patch);
+
+  console.log('[AUTH UPDATED]', updated);
   res.json(safe(updated));
 }));
 
@@ -148,6 +152,11 @@ function requireAdmin(req, res, next) {
   if (req.user?.role !== 'admin') return res.status(403).json({ error: 'Admin only.' });
   next();
 }
+
+router.get('/admin/online', requireAuth, requireAdmin, wrap(async(req,res)=>{
+  const users = await db.getOnlineUsers();
+  res.json(users);
+}));
 
 module.exports = router;
 module.exports.requireAuth  = requireAuth;

@@ -38,7 +38,7 @@ ADMIN_PASSWORD_HASH=  # output of: npm run hash yourpassword
 
 ## Player
 
-Fixed height `min(52vh, 480px)` — never balloons. 11 servers: Strigil, VidUp, VidCore, VidEasy, VidPlus, Vidsrc0, AdRock, VidNest, VidLink, Vidify, Vidzee.
+Fixed height `min(52vh, 480px)` — never balloons. 11 servers: Strigil, VidUp, VidCore, FilmU, VidPlus, Vidsrc0, AdRock, VidNest, VidLink, Vidify, Vidzee.
 
 ## Database (Neon Postgres)
 

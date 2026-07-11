@@ -16,17 +16,24 @@ const wrap = fn => (req, res, next) =>
 router.get('/home',              wrap(async (req,res) => res.json(await movies.home())));
 router.get('/trending',          wrap(async (req,res) => res.json(await movies.trending(+(req.query.page||1)))));
 router.get('/movies/popular',    wrap(async (req,res) => res.json(await movies.popular(+(req.query.page||1)))));
+router.get('/tv/popular',        wrap(async (req,res) => res.json(await movies.popularTV(+(req.query.page||1)))));
 router.get('/movies/top-rated',  wrap(async (req,res) => res.json(await movies.topRated(+(req.query.page||1)))));
+router.get('/tv/top-rated',      wrap(async (req,res) => res.json(await movies.topRatedTV(+(req.query.page||1)))));
 router.get('/movies/now-playing',wrap(async (req,res) => res.json(await movies.nowPlaying(+(req.query.page||1)))));
 router.get('/movies/upcoming',   wrap(async (req,res) => res.json(await movies.upcoming(+(req.query.page||1)))));
 router.get('/movies/genre/:id',  wrap(async (req,res) => res.json(await movies.byGenre(+req.params.id, +(req.query.page||1)))));
+router.get('/genre/:id',         wrap(async (req,res) => res.json(await movies.byGenre(+req.params.id, +(req.query.page||1)))));
 router.get('/genres',            wrap(async (req,res) => res.json({ genres: await movies.genres() })));
+router.get('/genres/tv',         wrap(async (req,res) => res.json({ genres: await movies.genres() })));
 router.get('/search',            wrap(async (req,res) => {
   const { q, page=1 } = req.query;
   if (!q?.trim()) return res.status(400).json({ error: 'q required' });
   res.json(await movies.search(q.trim(), +page));
 }));
 router.get('/movies/:id',        wrap(async (req,res) => res.json(await movies.details(req.params.id))));
+router.get('/movie/:id', wrap(async (req,res) =>
+  res.json(await movies.details(req.params.id))
+));
 router.get('/health',            (req,res) => res.json({ ok:true, uptime:process.uptime(), hasKey:!!process.env.TMDB_API_KEY }));
 
 // DMCA / Contact webhook
@@ -48,7 +55,7 @@ router.post('/dmca', wrap(async (req,res) => {
         { name:'📝 Desc',    value:String(description).slice(0,1000),inline:false },
         { name:'✍️ Sig',    value:String(signature).slice(0,200),   inline:true },
       ],
-      footer:{ text:'4reelscc' }
+      footer:{ text:'4reels.cc' }
     }]
   });
   res.json({ ok:true });
@@ -67,10 +74,29 @@ router.post('/contact', wrap(async (req,res) => {
         { name:'Subject', value:String(subject||'—').slice(0,200),  inline:false },
         { name:'Message', value:String(message).slice(0,1000),      inline:false },
       ],
-      footer:{ text:'4reelscc' }
+      footer:{ text:'4reels.cc' }
     }]
   });
   res.json({ ok:true });
 }));
+
+router.get('/discover', wrap(async (req,res) => {
+  const {
+    page = 1,
+    genre = '',
+    sort = 'popular',
+    rating = '',
+    type = 'movies'
+  } = req.query;
+
+  res.json(await movies.discover({
+    page: +page,
+    genre,
+    sort,
+    rating,
+    type
+  }));
+}));
+
 
 module.exports = router;

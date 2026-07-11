@@ -14,8 +14,6 @@ const { attachPartyWS } = require('./server/party');
 const app    = express();
 const server = http.createServer(app); // use http.Server so WS can share it
 const PORT   = process.env.PORT || 3000;
-const MAINTENANCE = process.env.MAINTENANCE_MODE === 'true';
-const DEV_PAGE = path.join(__dirname, 'public', 'development.html');
 
 // Seed admin + DB schema on startup
 db.seedAdmin().catch(err => {
@@ -50,12 +48,6 @@ app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '4mb' }));
 
-if (MAINTENANCE) {
-  app.use((req, res) => {
-    res.status(503).set('Retry-After', '86400').sendFile(DEV_PAGE);
-  });
-}
-
 // ── Ad-block middleware ──────────────────────────────
 const AD_HOSTS = ['doubleclick.net','googlesyndication.com','adservice.google.com','pagead2.googlesyndication.com','adnxs.com','popads.net','popcash.net','propellerads.com','exoclick.com'];
 app.use((req, res, next) => {
@@ -68,12 +60,6 @@ app.use((req, res, next) => {
 });
 
 // ── Static files ──────────────────────────────────────
-app.get('/logo.png', (req, res) => {
-  const custom = path.join(__dirname, 'public', '4reels.png');
-  if (fs.existsSync(custom)) return res.sendFile(custom);
-  res.sendFile(path.join(__dirname, 'public', '4reels-logo.svg'));
-});
-app.use(express.static(path.join(__dirname, 'public')));
 
 // ── Auth routes ───────────────────────────────────────
 const authRoutes  = require('./server/routes/auth');
@@ -123,6 +109,18 @@ app.use('/api', (req, res, next) => {
   if (!process.env.TMDB_API_KEY) return res.status(503).json({ error: 'TMDB key not configured. Visit /setup' });
   next();
 }, apiRoutes);
+
+app.get('/logo.png', (req, res) => {
+
+  const custom = path.join(__dirname, 'public', '4reels.png');
+
+  if (fs.existsSync(custom)) return res.sendFile(custom);
+
+  res.sendFile(path.join(__dirname, 'public', '4reels-logo.svg'));
+
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ── Static page routes ────────────────────────────────
 const STATIC = { '/dmca':'/dmca.html', '/privacy':'/privacy.html', '/terms':'/terms.html', '/contact':'/contact.html', '/setup':'/setup.html' };
