@@ -625,6 +625,15 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 28px 16px;backgro
   .md-poster-wrap{width:124px}
   .profile-layout{padding:24px 16px 50px}
   .profile-hero{flex-direction:column;gap:16px;text-align:center;padding:20px}
+
+  /* Kill the forced full-viewport black gap under the hero on
+     mobile. .view has min-height:100vh globally (fine on desktop,
+     where rows always exceed one screen) but on phones, whenever
+     actual content (hero + rows) is shorter than the viewport —
+     e.g. while rows are still loading, or on a short row list —
+     this was padding the page out with a solid black block to
+     hit 100vh. Letting height come from real content removes it. */
+  .view{min-height:0}
 }
 
 @media(max-width:480px){
