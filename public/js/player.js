@@ -10,7 +10,7 @@
   };
 })();
 
-// Only 2 servers — user switches in account settings, not on the watch page
+
 const SERVERS = [
   { id:'s1', name:'Server 1', url: id=>`https://embed.filmu.in/movie/${id}` },
   { id:'s2', name:'Server 2', url: id=>`https://vidrift.in/embed/movie/${id}` },
@@ -35,7 +35,6 @@ class Player {
 
     this._render();
 
-    // Register party sync handle
     window._partyPlayerHandle = {
       sync:        s  => this._partySync(s),
       getPosition: () => this._pos,
@@ -43,7 +42,6 @@ class Player {
   }
 
   _render() {
-    // NO server bar rendered here — just a clean player stage
     this.el.innerHTML = `
       <div class="player-shell">
         <div class="player-stage" id="pstage-${this.id}">
@@ -62,7 +60,6 @@ class Player {
 
     this._load(this.cur);
 
-    // Position tracker (elapsed time estimate — iframes are sandboxed)
     clearInterval(this._posTracker);
     this._posTracker = setInterval(() => {
       if (this._playing) this._pos += 1;
@@ -83,7 +80,6 @@ class Player {
 
     setTimeout(() => {
       iframe.src = srv.url(this.id);
-      iframe.referrerPolicy = 'no-referrer';
       const done = () => {
         clearTimeout(this._timer);
         if (ovl) ovl.style.display = 'none';
