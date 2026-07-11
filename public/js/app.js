@@ -478,6 +478,16 @@ const router = (() => {
     if (!href || href.startsWith('http') || href.startsWith('//') || href.startsWith('#') || href.startsWith('mailto')) return;
     if (a.target === '_blank') return;
     e.preventDefault();
+
+    // Auto-close the mobile dropdown menu after picking a tab, so the
+    // user isn't left staring at the open menu on top of the page they
+    // just navigated to — matches native app tab-bar behavior.
+    const mobNav = document.getElementById('mob-nav');
+    if (mobNav && mobNav.contains(a)) {
+      mobNav.classList.remove('open');
+      document.getElementById('hamburger')?.classList.remove('open');
+    }
+
     go(href);
   });
 
