@@ -51,9 +51,11 @@ class Player {
             <div class="pspinner"></div>
             <span class="povl-txt">Loading stream…</span>
           </div>
-          <iframe id="pif-${this.id}" referrerpolicy="no-referrer"
+          <iframe
+            id="pif-${this.id}"
             allow="fullscreen *; autoplay *; picture-in-picture *; encrypted-media *"
-            style="position:absolute;inset:0;width:100%;height:100%;border:none;background:#000">
+            style="position:absolute;inset:0;width:100%;height:100%;border:none;background:#000"
+            src="about:blank">
           </iframe>
         </div>
       </div>`;
