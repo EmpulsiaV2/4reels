@@ -1,4 +1,3 @@
-/* 4REELS — Player (2 servers only, no visible server bar, party sync) */
 'use strict';
 
 (function blockAds() {
@@ -12,7 +11,7 @@
 
 
 const SERVERS = [
-  { id:'s1', name:'Server 1', url: id=>`https://embed.filmu.in/movie/${id}` },
+  { id:'s1', name:'Server 1', url: id=>`https://embed.filmu.in/movie/${id}?apikey=4reels_premium_x8y7z6w5v4` },
   { id:'s2', name:'Server 2', url: id=>`https://vidrift.in/embed/movie/${id}` },
 ];
 
@@ -26,7 +25,6 @@ class Player {
     this._playing = false;
     if (!this.el) return;
 
-    // Read server preference from account settings (0 or 1)
     try {
       const prefs = JSON.parse(localStorage.getItem('4reels_prefs') ||
                                localStorage.getItem('4reels_prefs') || '{}');
@@ -95,13 +93,11 @@ class Player {
     }, 180);
   }
 
-  // Called externally (e.g. from settings) to switch server
   switchServer(idx) {
     if (idx < 0 || idx >= SERVERS.length) return;
     this._load(idx);
   }
 
-  // ── Party sync overlay ────────────────────────────────
   _partySync({ playing, position }) {
     this._pos     = position;
     this._playing = playing;
@@ -139,4 +135,4 @@ class Player {
 }
 
 window["4reelsPlayer"] = Player;
-window["4reelsPlayer"] = Player; // backward compat
+window["4reelsPlayer"] = Player;
