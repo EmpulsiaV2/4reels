@@ -40,7 +40,6 @@ app.use(helmet({
   crossOriginEmbedderPolicy:  false,
   crossOriginOpenerPolicy:    false,
   crossOriginResourcePolicy:  { policy: "cross-origin" },
-  referrerPolicy:             { policy: "no-referrer" },
 }));
 
 app.use(cors());
@@ -54,7 +53,6 @@ app.use((req, res, next) => {
   const host = (req.headers.host || '').toLowerCase();
   if (AD_HOSTS.some(h => host.includes(h))) return res.status(204).end();
   res.removeHeader('X-Frame-Options');
-  res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('Permissions-Policy', 'fullscreen=*, autoplay=*, picture-in-picture=*, encrypted-media=*, payment=(), usb=()');
   next();
 });
