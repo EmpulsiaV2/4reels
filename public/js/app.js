@@ -731,17 +731,23 @@ async function initHomeRows() {
     wireCards(sec);
   };
 
-  // Continue watching
-  const cwRaw = await Auth.authReq('/continue');
-
-  const cw = cwRaw.map(m => ({
-    tmdbId: m.movie_id,
-    title: m.movie_title,
-    poster: m.poster,
-    year: m.year,
-    rating: m.rating,
-    progress: m.progress
-  }));
+  // Continue watching — guarded on its own: guests (no auth token)
+  // or a failed request here must NOT stop Trending/Top Rated/Popular
+  // TV below from rendering. This was previously an unguarded
+  // `await`, so any 401 (e.g. a logged-out visitor) threw out of
+  // initHomeRows() entirely and left the rest of the homepage blank.
+  let cw = [];
+  try {
+    const cwRaw = await Auth.authReq('/continue');
+    cw = (cwRaw || []).map(m => ({
+      tmdbId: m.movie_id,
+      title: m.movie_title,
+      poster: m.poster,
+      year: m.year,
+      rating: m.rating,
+      progress: m.progress
+    }));
+  } catch (e) { console.error('Continue watching error', e); }
 
   if (cw.length) {
     const sec = document.createElement('div');
