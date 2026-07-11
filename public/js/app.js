@@ -961,6 +961,7 @@ async function showMyList() {
    ══════════════════════════════════════════════════════ */
 function initSearch() {
   const btn    = $('sb-search-btn-2') || $('sb-search-btn');
+  const mobBtn = $('search-toggle');
   const panel  = $('sb-search-panel');
   const inp    = $('search-input');
   const drop   = $('search-drop');
@@ -979,8 +980,14 @@ function initSearch() {
   });
 
   // Close when clicking anywhere outside
+  // NOTE: mobBtn (#search-toggle, the mobile top-bar icon) must be
+  // excluded here too, same as the desktop `btn`. Without it, tapping
+  // search-toggle opened the panel in its own handler below, then this
+  // same click bubbled up to document and closed it again instantly —
+  // looked like the button just didn't respond on mobile.
   document.addEventListener('click', e => {
-    if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+    if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)
+        && e.target !== mobBtn && !(mobBtn && mobBtn.contains(e.target))) {
       panel.style.display = 'none';
     }
   });
