@@ -32,9 +32,7 @@ img{display:block;max-width:100%}
 /* ── SHELL ── */
 .shell{display:flex;min-height:100vh;position:relative}
 
-/* ══════════════════════════════════════════════════
-   SIDEBAR — exactly from preview: 56px, icon-only
-   ══════════════════════════════════════════════════ */
+/* SIDEBAR */
 .sidebar{
   width:var(--sb);flex-shrink:0;
   position:fixed;top:0;left:0;bottom:0;z-index:400;
@@ -62,12 +60,10 @@ img{display:block;max-width:100%}
 }
 .sb-icon:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.06)}
 .sb-icon.active{color:rgba(255,255,255,.9)}
-/* Active bar on right */
 .sb-icon.active::after{
   content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);
   width:3px;height:16px;border-radius:2px 0 0 2px;background:rgba(255,255,255,.55);
 }
-/* Tooltip */
 .sb-icon[data-tip]::before{
   content:attr(data-tip);
   position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);
@@ -81,7 +77,6 @@ img{display:block;max-width:100%}
 .sb-spacer{flex:1}
 .sb-bottom{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;padding:0 8px}
 
-/* Profile avatar — matches preview .sb-avatar */
 .sb-profile-av{
   width:30px;height:30px;border-radius:50%;
   background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
@@ -102,7 +97,7 @@ img{display:block;max-width:100%}
 }
 .sb-profile-av:hover[data-tip]::before{opacity:1}
 
-/* ── MOBILE ── */
+/* MOBILE BAR */
 .mobile-bar{display:none}
 .mobile-bar-brand img{display:block}
 .nav-icon-btn{width:30px;height:30px;border-radius:var(--r3);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--tx2);display:flex;align-items:center;justify-content:center}
@@ -117,36 +112,27 @@ img{display:block;max-width:100%}
 .mob-nav a{display:block;color:var(--tx2);font-size:.86rem;font-weight:500;padding:8px 10px;border-radius:var(--r3)}
 .mob-nav a:hover{color:var(--tx1);background:rgba(255,255,255,.05)}
 
-/* ── MAIN — no margin, content is full width ── */
-#app{
-    flex:1;
-    min-width:0;
-    background:#000;
-}
+/* MAIN */
+#app{flex:1;min-width:0;background:#000}
 .view{min-height:100vh;padding-bottom:36px}
 
-/* ══════════════════════════════════════════════════
-   HERO — full bleed, extends behind sidebar
-   ══════════════════════════════════════════════════ */
-/* ══════════════════════════════════════════════════
-   HERO — full bleed, extends behind sidebar
-   ══════════════════════════════════════════════════ */
+/* HERO */
 .feature-strip {
     position: relative;
-    left: 0;                    /* reset */
-    margin-left: calc(-1 * var(--sb));   /* pull background under sidebar */
+    left: 0;
+    margin-left: calc(-1 * var(--sb));
     width: 100vw;
     height: 100vh;
     min-height: 500px;
     max-height: 820px;
-    overflow: visible;          /* changed from hidden */
+    overflow: visible;
     z-index: 1;
 }
 
 .fs-slides {
     position: absolute;
     inset: 0;
-    left: calc(-1 * var(--sb));   /* ensure slides also shift */
+    left: calc(-1 * var(--sb));
     width: 100vw;
 }
 
@@ -160,7 +146,6 @@ img{display:block;max-width:100%}
 }
 .fs-slide.active { opacity: 1; }
 
-/* Overlay */
 .fs-slide::after {
     content: '';
     position: absolute;
@@ -170,17 +155,15 @@ img{display:block;max-width:100%}
         linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.3) 35%, transparent 65%);
 }
 
-/* Content — keep offset past sidebar */
 .fs-content {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 0 0 160px calc(var(--sb) + 28px);   /* this stays good */
+    padding: 0 0 160px calc(var(--sb) + 28px);
     z-index: 2;
-    max-width: 620px;   /* slightly wider if needed */
+    max-width: 620px;
 }
-
 
 .fs-title{
   font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;
@@ -197,7 +180,6 @@ img{display:block;max-width:100%}
 .fs-genre+.fs-genre::before{content:'|';position:absolute;left:-10px;color:rgba(255,255,255,.25)}
 .fs-btns{display:flex;align-items:center;gap:12px}
 
-/* Big play button — white circle */
 .btn-play-circle{
   width:52px;height:52px;border-radius:50%;
   background:#fff;display:flex;align-items:center;justify-content:center;
@@ -218,7 +200,6 @@ img{display:block;max-width:100%}
 }
 .fs-action-btn:hover{background:rgba(255,255,255,.2);color:#fff}
 
-/* Right controls */
 .fs-controls{position:absolute;bottom:160px;right:24px;z-index:3;display:flex;gap:8px;align-items:center}
 .fs-ctrl{
   width:38px;height:38px;border-radius:50%;
@@ -263,10 +244,7 @@ img{display:block;max-width:100%}
 .filmstrip-item.active img{opacity:1}
 .filmstrip-item:hover img{opacity:.85}
 
-/* ══════════════════════════════════════════════════
-   ROWS — content below hero
-   Uses padding-left to clear sidebar visually
-   ══════════════════════════════════════════════════ */
+/* ROWS */
 .rows{padding:32px 0 40px}
 .row-sec{padding:0 28px;margin-bottom:36px}
 .row-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -287,20 +265,11 @@ img{display:block;max-width:100%}
     padding-bottom: 4px;
     scrollbar-width: none;
 }
-
 .cards-row::-webkit-scrollbar,
-.movie-row::-webkit-scrollbar {
-    display: none;
-}
+.movie-row::-webkit-scrollbar { display: none; }
+.movie-row > *, .cards-row > * { flex: 0 0 auto; }
 
-.movie-row > *,
-.cards-row > * {
-    flex: 0 0 auto;
-}
-
-/* ══════════════════════════════════════════════════
-   CARD — exact from preview
-   ══════════════════════════════════════════════════ */
+/* CARDS */
 .card,.mc{
   flex-shrink:0;width:155px;cursor:pointer;
   position:relative;transition:transform .18s;
@@ -328,10 +297,8 @@ img{display:block;max-width:100%}
 .card-rat,.mc-rat{color:var(--warn);font-weight:600;display:flex;align-items:center;gap:2px}
 .card-dot{width:2px;height:2px;background:rgba(255,255,255,.25);border-radius:50%}
 .mc-year{font-size:.64rem;color:var(--tx3)}
-/* Wide card */
 .card-wide{width:220px}
 .card-wide .card-poster{aspect-ratio:16/9}
-/* CW card */
 .cw-card{flex-shrink:0;width:166px;cursor:pointer;display:flex;flex-direction:column;transition:transform .16s}
 .cw-card:hover{transform:translateY(-3px)}
 .cw-poster{width:100%;aspect-ratio:16/9;background:rgba(255,255,255,.06);overflow:hidden;border-radius:8px;position:relative}
@@ -352,12 +319,9 @@ img{display:block;max-width:100%}
 .cw-progress{height:2px;background:rgba(255,255,255,.07);border-radius:1px;overflow:hidden}
 .cw-progress-bar{height:100%;background:rgba(255,255,255,.3);transition:width .3s}
 
-/* MOVIE GRID */
 .movie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px;padding:0 28px;max-width:var(--max)}
 
-/* ══════════════════════════════════════════════════
-   BUTTONS
-   ══════════════════════════════════════════════════ */
+/* BUTTONS */
 .btn-pri{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:#fff;color:#000;font-family:var(--fh);font-weight:700;font-size:.84rem;border:none;border-radius:99px;cursor:pointer;transition:opacity .14s;white-space:nowrap}
 .btn-pri:hover{opacity:.88}
 .btn-gho{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);font-family:var(--fh);font-weight:500;font-size:.84rem;border-radius:99px;transition:all .14s;white-space:nowrap;cursor:pointer}
@@ -409,9 +373,7 @@ img{display:block;max-width:100%}
 .skel::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);animation:shimmer 1.4s linear infinite}
 .spinner{width:26px;height:26px;border:2px solid rgba(255,255,255,.08);border-top-color:rgba(255,255,255,.4);border-radius:50%;animation:spin .7s linear infinite}
 
-/* ══════════════════════════════════════════════════
-   MOVIE DETAIL
-   ══════════════════════════════════════════════════ */
+/* MOVIE DETAIL */
 .movie-detail-loader{display:flex;align-items:center;justify-content:center;height:52vh}
 .md-backdrop{position:relative;height:280px;overflow:hidden;background:#000}
 .md-backdrop-img{position:absolute;inset:0;background-size:cover;background-position:center 18%}
@@ -445,9 +407,7 @@ img{display:block;max-width:100%}
 .sim-row::-webkit-scrollbar{display:none}
 .sim-row .mc,.sim-row .card{flex-shrink:0;width:120px}
 
-/* ══════════════════════════════════════════════════
-   WATCH PAGE
-   ══════════════════════════════════════════════════ */
+/* WATCH PAGE */
 .watch-layout{display:grid;grid-template-columns:1fr 255px;gap:18px;padding:18px 28px 48px;max-width:var(--max)}
 .watch-player-wrap{margin-bottom:12px;min-width:0;overflow:hidden}
 .watch-title{font-family:var(--fh);font-size:1.05rem;font-weight:600;margin-bottom:5px;color:rgba(255,255,255,.88)}
@@ -475,9 +435,7 @@ img{display:block;max-width:100%}
 .pspinner{width:28px;height:28px;border:2px solid rgba(255,255,255,.08);border-top-color:rgba(255,255,255,.4);border-radius:50%;animation:spin .7s linear infinite}
 .povl-txt{font-size:.76rem;color:rgba(255,255,255,.28)}
 
-/* ══════════════════════════════════════════════════
-   PROFILE — clean redesign
-   ══════════════════════════════════════════════════ */
+/* PROFILE */
 .profile-layout{padding:32px 28px 64px;max-width:860px}
 .profile-hero{
   display:flex;align-items:center;gap:22px;
@@ -578,7 +536,7 @@ img{display:block;max-width:100%}
 .toast.err{border-color:rgba(200,50,50,.3);color:rgba(220,100,100,.82)}
 .toast.success{border-color:rgba(100,190,100,.22);color:rgba(130,195,130,.78)}
 
-/* FOOTER — exact from preview */
+/* FOOTER */
 footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 28px 16px;background:#000}
 .footer-inner{padding:0;max-width:var(--max)}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px;margin-bottom:18px}
@@ -625,31 +583,74 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 28px 16px;backgro
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 
-/* RESPONSIVE */
-@media(max-width:900px){.watch-layout{grid-template-columns:1fr;gap:14px}.watch-sidebar{display:none}.footer-grid{grid-template-columns:1fr 1fr;gap:20px}}
+/* RESPONSIVE — ENHANCED MOBILE STYLING */
+@media(max-width:900px){
+  .watch-layout{grid-template-columns:1fr;gap:14px}
+  .watch-sidebar{display:none}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:20px}
+}
+
 @media(max-width:768px){
   :root{--sb:0px}
   .sidebar{display:none}
-  .mobile-bar{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:52px;background:rgba(0,0,0,.95);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:300;flex-shrink:0}
-  .feature-strip{margin-left:0;width:100%;height:56vw;min-height:280px}
-  .fs-content{padding:0 16px 80px 16px}
-  .fs-title{font-size:1.7rem}
-  .filmstrip{padding:10px 14px}
-  .row-sec,.rows .row-sec{padding:22px 14px 0}
-  .movie-grid,.genres-grid{padding:0 14px}
-  .pg-header{padding:20px 14px 12px}
-  .watch-layout{padding:12px 14px 36px}
-  .player-stage{height:min(44vw,290px)}
-  .md-body{padding:0 14px 36px}
-  .md-top{flex-direction:column;gap:14px;margin-top:14px}
-  .md-info{padding-top:0}
-  .profile-layout{padding:20px 14px 50px}
-  footer{padding:22px 14px 14px}
-  .footer-grid{grid-template-columns:1fr;gap:18px}
+  .mobile-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    height:60px;
+    background:rgba(0,0,0,.97);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:300;
+    backdrop-filter:blur(16px);
+  }
+  .feature-strip{margin-left:0;width:100%;height:62vw;min-height:340px}
+  .fs-content{padding:0 18px 100px 18px}
+  .fs-title{font-size:clamp(1.75rem,7.5vw,2.6rem);line-height:1.05}
+  .fs-desc{font-size:0.93rem;line-height:1.55}
+  .filmstrip{padding:14px 16px}
+  .filmstrip-item{width:96px;height:56px}
+  .row-sec,.rows .row-sec{padding:24px 16px 0}
+  .cards-row,.movie-row{gap:14px;padding-bottom:16px}
+  .card,.mc{width:142px}
+  .card-wide{width:205px}
+  .movie-grid,.genres-grid{padding:0 16px}
+  .pg-header{padding:20px 16px 12px}
+  .watch-layout{padding:12px 16px 44px}
+  .player-stage{height:min(52vw,300px)}
+  .md-body{padding:0 16px 44px}
+  .md-top{flex-direction:column;gap:18px;margin-top:8px}
+  .md-poster-wrap{width:124px}
+  .profile-layout{padding:24px 16px 50px}
+  .profile-hero{flex-direction:column;gap:16px;text-align:center;padding:20px}
 }
-@media(max-width:420px){.movie-grid{grid-template-columns:repeat(2,1fr)}.feature-strip{height:64vw}.fs-title{font-size:1.4rem}}
 
+@media(max-width:480px){
+  .feature-strip{height:68vw}
+  .fs-title{font-size:clamp(1.55rem,8vw,2.3rem)}
+  .card,.mc{width:136px}
+  .filmstrip-item{width:88px;height:52px}
+}
 
+@media(max-width:380px){
+  .fs-content{padding-bottom:85px}
+  .fs-btns{flex-direction:column;align-items:flex-start;gap:10px}
+  .btn-play-circle{width:50px;height:50px}
+}
+
+/* Extra mobile enhancements */
+@media(max-width:768px){
+  .mob-nav a{padding:14px 16px;font-size:0.97rem}
+  .cards-row,.movie-row,.cast-row,.sim-row,.watch-cast-row{
+    -webkit-overflow-scrolling:touch;
+  }
+  .fs-ctrl,.filmstrip-arrow,.fs-arrow{
+    width:48px;
+    height:48px;
+  }
+}
 
 .watch-cast {
   margin-top:28px;
@@ -696,4 +697,77 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 28px 16px;backgro
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE OPTIMIZATION PASS
+   Everything below is scoped to max-width media queries,
+   height-based mobile-only queries, or elements that are
+   already display:none on desktop (.mobile-bar and its
+   children) — none of it alters the PC layout.
+   ═══════════════════════════════════════════════════ */
+
+/* Inert on desktop: no visible mouse-hover flash, no font
+   auto-zoom relevance, no layout change — safe globally. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+
+@media(max-width:768px){
+
+  /* Search panel — was nested in .sidebar (display:none on
+     mobile) so it could never appear once opened by JS.
+     It's now a sibling in the DOM; make it a full-width
+     overlay on small screens instead of the desktop 300px drawer. */
+  #sb-search-panel{
+    left:0 !important;
+    width:100% !important;
+  }
+  #sb-search-panel #search-drop{padding:0 2px}
+
+  /* Prevent iOS Safari auto-zoom-on-focus (triggers whenever
+     an input's computed font-size is under 16px). Mobile-only
+     bump, desktop keeps its original smaller sizes. */
+  #search-input,
+  .settings-input,
+  .settings-select,
+  .auth-field input,
+  .form-group input,
+  .form-group textarea,
+  .form-group select,
+  .fsel{
+    font-size:16px !important;
+  }
+
+  /* Comfortable ≥40px touch targets for the mobile top bar.
+     .mobile-bar is display:none on desktop, so its children
+     never render there — this only affects phones/tablets. */
+  .hamburger{padding:10px}
+  .nav-icon-btn{width:38px;height:38px}
+
+  /* Auth modal: keep it usable on short mobile viewports
+     without touching desktop's centered modal. */
+  .auth-modal{max-height:88vh;overflow-y:auto}
+
+  /* DMCA / legal contact form: two-column row is too tight
+     under ~768px, stack it instead. */
+  .form-row{grid-template-columns:1fr}
+  .legal-wrap{padding:28px 18px 56px}
+  .legal-hero{padding:32px 14px 24px}
+}
+
+@media(max-width:420px){
+  /* Two footer columns get cramped on very narrow phones. */
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bot{flex-direction:column}
+
+  /* Auth modal edge-to-edge with a little breathing room. */
+  .auth-modal{padding:22px 18px}
+}
+
+/* Short mobile viewports in landscape (phones only — real
+   desktop windows are essentially never this short AND this
+   narrow at once, so this stays mobile-scoped). */
+@media(max-width:768px) and (max-height:420px){
+  .feature-strip{height:auto;min-height:280px}
+  .auth-modal{max-height:80vh}
 }

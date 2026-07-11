@@ -29,20 +29,6 @@
       </svg>
     </a>
 
-    <!-- Inline search drop (hidden by default) -->
-    <div id="sb-search-panel" style="display:none;position:fixed;top:0;left:64px;width:300px;height:100vh;background:rgba(0,0,0,.96);border-right:1px solid rgba(255,255,255,.07);z-index:500;flex-direction:column">
-      <div style="padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,.07)">
-        <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 11px">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="search-input" placeholder="Search movies, series…"
-            autocomplete="off" spellcheck="false"
-            style="flex:1;background:none;border:none;outline:none;color:rgba(255,255,255,.85);font-family:Inter,sans-serif;font-size:.86rem"/>
-          <button id="search-close" style="background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.9rem;padding:2px">✕</button>
-        </div>
-      </div>
-      <div id="search-drop" style="overflow-y:auto;flex:1"></div>
-    </div>
-
     <!-- Nav icons -->
     <nav class="sb-nav">
       <!-- Home -->
@@ -93,6 +79,20 @@
       </button>
     </div>
   </aside>
+
+  <!-- Inline search drop (hidden by default) — sibling of .sidebar so it still works when the sidebar is hidden on mobile -->
+  <div id="sb-search-panel" style="display:none;position:fixed;top:0;left:64px;width:300px;height:100vh;background:rgba(0,0,0,.96);border-right:1px solid rgba(255,255,255,.07);z-index:500;flex-direction:column">
+    <div style="padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 11px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search-input" placeholder="Search movies, series…"
+          autocomplete="off" spellcheck="false"
+          style="flex:1;background:none;border:none;outline:none;color:rgba(255,255,255,.85);font-family:Inter,sans-serif;font-size:.86rem"/>
+        <button id="search-close" style="background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.9rem;padding:2px">✕</button>
+      </div>
+    </div>
+    <div id="search-drop" style="overflow-y:auto;flex:1"></div>
+  </div>
 
   <!-- MOBILE TOP BAR -->
   <header class="mobile-bar" id="mobile-bar">
