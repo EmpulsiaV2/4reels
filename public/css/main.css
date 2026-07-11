@@ -634,6 +634,56 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 28px 16px;backgro
      this was padding the page out with a solid black block to
      hit 100vh. Letting height come from real content removes it. */
   .view{min-height:0}
+
+  .player-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+  
+  .player-stage {
+    position: relative !important;
+    width: 100% !important;
+    height: 0 !important;
+    padding-bottom: 56.25% !important;
+    background: #000 !important;
+    overflow: hidden !important;
+  }
+  
+  .player-stage iframe {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+  }
+  
+  .player-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 3 !important;
+  }
+  
+  /* Also fix the watch layout on mobile */
+  .watch-layout {
+    padding: 8px 8px 32px !important;
+  }
+  
+  .watch-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  
+  .watch-player-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 12px !important;
+    overflow: hidden !important;
+    border-radius: 8px !important;
+  }
 }
 
 @media(max-width:480px){

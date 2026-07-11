@@ -41,16 +41,16 @@ class Player {
 
   _render() {
     this.el.innerHTML = `
-      <div class="player-shell">
-        <div class="player-stage" id="pstage-${this.id}">
-          <div class="player-overlay" id="povl-${this.id}">
-            <div class="pspinner"></div>
-            <span class="povl-txt">Loading stream…</span>
+      <div class="player-shell" style="width:100%;max-width:100%;">
+        <div class="player-stage" id="pstage-${this.id}" style="position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;overflow:hidden;">
+          <div class="player-overlay" id="povl-${this.id}" style="position:absolute;inset:0;z-index:3;background:rgba(0,0,0,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            <div class="pspinner" style="width:28px;height:28px;border:2px solid rgba(255,255,255,.08);border-top-color:rgba(255,255,255,.4);border-radius:50%;animation:spin .7s linear infinite;"></div>
+            <span class="povl-txt" style="font-size:.76rem;color:rgba(255,255,255,.28);">Loading stream…</span>
           </div>
           <iframe 
             id="pif-${this.id}" 
             allow="fullscreen *; autoplay *; picture-in-picture *; encrypted-media *" 
-            style="position:absolute;inset:0;width:100%;height:100%;border:none;background:#000" 
+            style="position:absolute;inset:0;width:100%;height:100%;border:none;background:#000;" 
             src="about:blank">
           </iframe>
         </div>
