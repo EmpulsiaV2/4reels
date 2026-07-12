@@ -211,13 +211,13 @@ img{display:block;max-width:100%}
 
 .fs-arrow{
   position:absolute;top:50%;transform:translateY(-50%);z-index:3;
-  width:30px;height:30px;border-radius:50%;
-  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);
-  color:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;
-  transition:all .14s;cursor:pointer;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;
+  transition:all .14s;cursor:pointer;opacity:1;
 }
 .fs-arrow:hover{background:rgba(255,255,255,.12);color:#fff}
-.fs-prev{left:calc(var(--sb) + 10px)}.fs-next{right:10px}
+.fs-prev{left:calc(var(--sb) + 10px);display:flex!important;visibility:visible!important}.fs-next{right:10px;display:flex!important;visibility:visible!important}
 
 /* FILMSTRIP */
 .filmstrip{
@@ -600,14 +600,14 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 28px 16px;backgro
     padding:0 16px;
     height:60px;
     background:rgba(0,0,0,.97);
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:none;
     position:sticky;
     top:0;
     z-index:300;
     backdrop-filter:blur(16px);
   }
-  .feature-strip{margin-left:0;width:100%;height:62vw;min-height:340px}
-  .fs-content{padding:0 18px 100px 18px}
+  .feature-strip{margin-left:0;width:100%;height:72vw;min-height:380px}
+  .fs-content{padding:0 18px 90px 18px}
   .fs-title{font-size:clamp(1.75rem,7.5vw,2.6rem);line-height:1.05}
   .fs-desc{font-size:0.93rem;line-height:1.55}
   .filmstrip{padding:14px 16px}
@@ -964,3 +964,6 @@ a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
     background:rgba(255,255,255,.1) !important;
   }
 }
+/* Hero eyebrow label */
+.fs-eyebrow{display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;padding:4px 12px 4px 8px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-family:var(--fh);font-size:.63rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em}
+.fs-eyebrow-dot{width:5px;height:5px;background:rgba(255,255,255,.45);border-radius:50%}
