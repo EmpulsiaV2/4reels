@@ -453,6 +453,7 @@ const router = (() => {
     { re: /^\/movie\/(\d+)$/,                     fn: (m) => showMovieDetail(m[1]) },
     { re: /^\/movie\/(\d+)\/watch$/,              fn: (m) => showWatch(m[1]) },
     { re: /^\/profile$/,                          fn: showProfile   },
+    { re: /^\/series\/(\d+)\/(\d+)\/(\d+)$/, fn: (m) => showSeriesWatch(m[1], +m[2], +m[3]) },
   ];
 
   function handle(path) {
@@ -800,19 +801,20 @@ function initSafeBanner() {
 /* ══════════════════════════════════════════════════════
    GRID (movies / series)
    ══════════════════════════════════════════════════════ */
-async function showGrid(type) {
+async function showGrid(type = 'movies') {
   showView('view-grid');
-  document.title = type === 'series' ? '4Reels — Series' : '4Reels — Movies';
-  $('grid-title').textContent = type === 'series' ? 'Series' : 'Movies';
-  $('grid-sub').textContent   = '';
+  
+  document.title = type === 'series' ? '4Reels — TV Series' : '4Reels — Movies';
+  $('grid-title').textContent = type === 'series' ? 'TV Series' : 'Movies';
+  $('grid-sub').textContent   = type === 'series' ? 'Popular TV Shows' : 'Popular Movies';
   $('grid-back').style.display = 'none';
-  $('grid-filters').style.display = '';
+  $('grid-filters').style.display = 'block'; // keep filters for both
   
   await loadGrid(type, 1);
   initGridFilters(type);
 }
 
-async function loadGrid(type, page) {
+async function loadGrid(type, page = 1) {
   const grid = $('grid-movies'); 
   if (!grid) return;
 
@@ -832,13 +834,18 @@ async function loadGrid(type, page) {
     const genre  = $('genre-sel')?.value  || '';
     const rating = $('rating-sel')?.value || '';
     
-    const data = await API.discover(page, genre, sort, rating, type);
+    // FIXED: Pass type correctly
+    const data = await API.discover(page, genre, sort, rating, type === 'series' ? 'tv' : 'movie');
     
     if (data.results && data.results.length > 0) {
-      grid.innerHTML = (data.results || []).map(cardHTML).join('');
+      grid.innerHTML = (data.results || []).map(m => {
+        // Mark as TV so cards know
+        if (type === 'series') m.mediaType = 'tv';
+        return cardHTML(m);
+      }).join('');
     } else {
       grid.innerHTML = `<div style="padding:60px 20px;text-align:center;color:rgba(255,255,255,.3);grid-column:1/-1">
-        No results found.
+        No ${type === 'series' ? 'TV shows' : 'movies'} found.
       </div>`;
     }
     
@@ -989,12 +996,6 @@ function initSearch() {
     panel.style.display = 'none'; 
   });
 
-  // Close when clicking anywhere outside
-  // NOTE: mobBtn (#search-toggle, the mobile top-bar icon) must be
-  // excluded here too, same as the desktop `btn`. Without it, tapping
-  // search-toggle opened the panel in its own handler below, then this
-  // same click bubbled up to document and closed it again instantly —
-  // looked like the button just didn't respond on mobile.
   document.addEventListener('click', e => {
     if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)
         && e.target !== mobBtn && !(mobBtn && mobBtn.contains(e.target))) {
@@ -1020,33 +1021,51 @@ function initSearch() {
           drop.innerHTML = '<div style="padding:16px;color:rgba(255,255,255,.3);font-size:.8rem;text-align:center">No results</div>'; 
           return; 
         }
-        drop.innerHTML = results.slice(0, 10).map(m => `
-          <div class="search-item" data-id="${esc(m.tmdbId||m.id)}" style="display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05);transition:background .12s">
-            <div style="width:32px;height:48px;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.06);flex-shrink:0">
-              ${m.poster ? `<img src="${esc(m.poster)}" style="width:100%;height:100%;object-fit:cover" loading="lazy"/>` : ''}
-            </div>
-            <div>
-              <div style="font-family:Inter,sans-serif;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.8)">${esc(m.title)}</div>
-              <div style="font-size:.7rem;color:rgba(255,255,255,.3);margin-top:2px">${esc(m.year||'')} · ${m.mediaType==='tv'?'Series':'Movie'}</div>
-            </div>
-          </div>`).join('');
-        
+
+        drop.innerHTML = results.slice(0, 12).map(m => {
+          const isTV = m.mediaType === 'tv' || m.media_type === 'tv' || !!m.first_air_date;
+          const title = m.title || m.name || 'Untitled';
+          const year = m.release_date || m.first_air_date || '';
+          const typeLabel = isTV ? 'TV Series' : 'Movie';
+          
+          return `
+            <div class="search-item" data-id="${esc(m.tmdbId || m.id)}" data-type="${isTV ? 'tv' : 'movie'}" 
+                 style="display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05)">
+              <div style="width:36px;height:54px;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.06);flex-shrink:0">
+                ${m.poster ? `<img src="${esc(m.poster)}" style="width:100%;height:100%;object-fit:cover" loading="lazy"/>` : ''}
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-family:Inter,sans-serif;font-size:.85rem;font-weight:500;color:rgba(255,255,255,.9)">${esc(title)}</div>
+                <div style="font-size:.73rem;color:rgba(255,255,255,.45);margin-top:1px">
+                  ${year ? year.slice(0,4) + ' · ' : ''}${typeLabel}
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+
+        // Click handlers
         drop.querySelectorAll('.search-item').forEach(el => {
-          el.addEventListener('mouseenter', () => el.style.background = 'rgba(255,255,255,.04)');
-          el.addEventListener('mouseleave', () => el.style.background = '');
           el.addEventListener('click', () => {
-            router.go(`/movie/${el.dataset.id}`);
+            const id = el.dataset.id;
+            const type = el.dataset.type;
             panel.style.display = 'none';
             inp.value = '';
+            
+            if (type === 'tv') {
+              router.go(`/series/${id}`);
+            } else {
+              router.go(`/movie/${id}`);
+            }
           });
         });
-      } catch { 
-        drop.innerHTML = ''; 
+
+      } catch(e) { 
+        drop.innerHTML = '<div style="padding:16px;color:rgba(255,255,255,.3)">Search failed</div>'; 
       }
-    }, 320);
+    }, 280);
   });
 
-  // Mobile search toggle
+  // Mobile search
   $('search-toggle')?.addEventListener('click', () => {
     panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
     if (panel.style.display === 'flex') setTimeout(() => inp?.focus(), 80);
@@ -1080,8 +1099,26 @@ async function showMovieDetail(id) {
   try {
     const m = await API.details(id);
     document.title = `${m.title} — 4Reels`;
+    
+    const isTV = m.mediaType === 'tv' || m.seasons;
     const inList = listHas(m.tmdbId);
     const content = $('movie-detail-content');
+
+    let extraHTML = '';
+    if (isTV && m.seasons?.length) {
+      extraHTML = `
+        <div class="md-section">
+          <div class="md-section-ttl">Seasons</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            ${m.seasons.map(s => `
+              <button class="btn-gho season-btn" data-id="${m.tmdbId}" data-season="${s.season_number}">
+                Season ${s.season_number}
+              </button>
+            `).join('')}
+          </div>
+        </div>`;
+    }
+
     content.innerHTML = `
       <div class="md-backdrop">
         <div class="md-backdrop-img" style="background-image:url('${esc(m.backdrop||m.poster||'')}')"></div>
@@ -1124,6 +1161,7 @@ async function showMovieDetail(id) {
                 </div>`).join('')}
             </div>
           </div>` : ''}
+        ${extraHTML}
         ${m.similar?.length ? `
           <div class="md-section">
             <div class="md-section-ttl">More Like This</div>
@@ -1134,7 +1172,24 @@ async function showMovieDetail(id) {
     $('movie-loader').style.display  = 'none';
     content.style.display            = '';
 
-    $('md-watch-btn')?.addEventListener('click', () => router.go(`/movie/${m.tmdbId}/watch`));
+    // Watch button
+    $('md-watch-btn')?.addEventListener('click', () => {
+      if (isTV) {
+        router.go(`/series/${m.tmdbId}/1/1`);  // Start with S01E01
+      } else {
+        router.go(`/movie/${m.tmdbId}/watch`);
+      }
+    });
+
+    // Season buttons
+    document.querySelectorAll('.season-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sid = btn.dataset.id;
+        const season = btn.dataset.season;
+        router.go(`/series/${sid}/${season}/1`);
+      });
+    });
+
     $('md-list-btn')?.addEventListener('click', () => {
       const added = listToggle(m);
       const btn   = $('md-list-btn');
@@ -1144,6 +1199,7 @@ async function showMovieDetail(id) {
       }
       toast(added ? 'Added to My List' : 'Removed', 'success');
     });
+
     wireCards(content);
   } catch (e) {
     $('movie-loader').style.display = 'none';
@@ -1472,9 +1528,25 @@ function initSidebar() {
   });
 }
 
-/* ══════════════════════════════════════════════════════
-   BOOT
-   ══════════════════════════════════════════════════════ */
+
+async function showSeriesWatch(id, season, episode) {
+  showView('view-watch');
+  const playerWrap = $('watch-player-wrap');
+  playerWrap.innerHTML = '';
+
+  // Pass season/episode to player
+  if (window["4reelsPlayer"]) {
+    const player = new window["4reelsPlayer"]('watch-player-wrap', id);
+    // You may need to extend Player class later to accept season/ep
+  }
+
+  try {
+    const m = await API.details(id);
+    cwAdd({ ...m, progress: 30 });
+    // Render info with current episode
+  } catch(e) {}
+}
+
 async function boot() {
   const lb = $('lb');
   if (lb) {

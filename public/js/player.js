@@ -12,7 +12,7 @@
 
 const SERVERS = [
   { id:'s1', name:'Server 1', url: id=>`https://embed.filmu.in/movie/${id}?apikey=4reels_premium_x8y7z6w5v4` },
-  { id:'s2', name:'Server 2', url: id=>`https://vidrift.in/embed/movie/${id}` },
+  { id:'s2', name:'Server 2', url: id=>`https://vaplayer.ru/embed/movie/${id}?color=5865f2` },
 ];
 
 class Player {
